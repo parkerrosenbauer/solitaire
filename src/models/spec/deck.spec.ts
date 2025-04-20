@@ -1,0 +1,80 @@
+import { Deck } from '../deck';
+import { Card, Rank, Suit } from '../card';
+
+describe('Deck', () => {
+  const cardDeck: Card[] = [];
+  const suits = Object.values(Suit) as Array<Suit>;
+  const ranks = Object.values(Rank).filter(
+    (value) => typeof value === 'number',
+  ) as Array<Rank>;
+
+  suits.forEach((suit) => {
+    ranks.forEach((rank) => {
+      cardDeck.push(new Card(suit, rank));
+    });
+  });
+
+  let deck: Deck;
+  let emptyDeck: Deck;
+
+  beforeEach(() => {
+    deck = new Deck(cardDeck.slice());
+    emptyDeck = new Deck([]);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('should create a deck with the provided cards', () => {
+    expect(deck.size).toBe(52);
+  });
+
+  it('should return the last card of the deck when peeking', () => {
+    expect(deck.peek).toEqual(cardDeck[cardDeck.length - 1]);
+  });
+
+  it('should return undefined when peeking at an empty deck', () => {
+    expect(emptyDeck.peek).toEqual(undefined);
+  });
+
+  it('should shuffle the deck', () => {
+    const mockRandom = jest.spyOn(Math, 'random');
+    mockRandom.mockImplementation(() => 0.5);
+    deck.shuffle();
+    expect(deck.cards).not.toEqual(cardDeck);
+  });
+
+  it('should draw last card from the deck', () => {
+    const drawnCard = deck.draw();
+    expect(drawnCard.equals(cardDeck[cardDeck.length - 1])).toEqual(true);
+    expect(deck.size).toBe(51);
+  });
+
+  it('should throw an error when drawing from an empty deck', () => {
+    expect(() => emptyDeck.draw()).toThrow('Cannot draw from an empty deck.');
+  });
+
+  it('should add a card to the top of the deck', () => {
+    const card = deck.draw();
+    deck.addCard(card);
+    expect(deck.peek).toBe(card);
+    expect(deck.size).toBe(52);
+  });
+
+  it('should reset the deck with original cards', () => {
+    deck.draw();
+    expect(deck.size).toBe(51);
+    deck.reset();
+    expect(deck.size).toBe(52);
+  });
+
+  it('should reset the deck with new cards', () => {
+    const newCardDeck = [
+      new Card(Suit.Clubs, Rank.A),
+      new Card(Suit.Diamonds, Rank.Ten),
+    ];
+    deck.reset(newCardDeck);
+    expect(deck.cards).toEqual(newCardDeck);
+  });
+});

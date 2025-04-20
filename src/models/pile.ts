@@ -1,0 +1,36 @@
+import { Card } from './card';
+
+export class Pile {
+  private _cards: Card[];
+
+  get cards(): Card[] {
+    return [...this._cards];
+  }
+
+  get size(): number {
+    return this._cards.length;
+  }
+
+  get isEmpty(): boolean {
+    return this.size <= 0;
+  }
+
+  get peek(): Card | undefined {
+    return this._cards[this.size - 1];
+  }
+
+  constructor(cards: Card[] = []) {
+    this._cards = cards;
+  }
+
+  draw(): Card {
+    if (this.isEmpty) {
+      throw new Error('Cannot draw from an empty pile.');
+    }
+    return this._cards.pop()!;
+  }
+
+  addCard(card: Card) {
+    this._cards.push(card);
+  }
+}

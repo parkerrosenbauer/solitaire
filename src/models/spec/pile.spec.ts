@@ -1,0 +1,51 @@
+import { Pile } from '../pile';
+import { Card, Rank, Suit } from '../card';
+
+describe('Pile', () => {
+  const cardPile = [
+    new Card(Suit.Clubs, Rank.A),
+    new Card(Suit.Diamonds, Rank.Ten),
+  ];
+
+  let emptyPile: Pile;
+  let pile: Pile;
+
+  beforeEach(() => {
+    emptyPile = new Pile();
+    pile = new Pile(cardPile.slice());
+  });
+
+  it('should initialize with an empty card set if none provided', () => {
+    expect(emptyPile.size).toBe(0);
+  });
+
+  it('should initialize with the provided cards', () => {
+    expect(pile.size).toBe(cardPile.length);
+    expect(pile.cards).toEqual(cardPile);
+  });
+
+  it('should return the last card of the pile when peeking', () => {
+    expect(pile.peek).toEqual(cardPile[cardPile.length - 1]);
+  });
+
+  it('should return undefined when peeking at an empty pile', () => {
+    expect(emptyPile.peek).toEqual(undefined);
+  });
+
+  it('should draw last card from the deck', () => {
+    const card = pile.draw();
+    expect(card.equals(cardPile[cardPile.length - 1])).toEqual(true);
+    expect(pile.size).toBe(1);
+  });
+
+  it('should throw an error when drawing from an empty pile', () => {
+    expect(() => emptyPile.draw()).toThrow('Cannot draw from an empty pile.');
+  });
+
+  it('should add a card to the top of the pile', () => {
+    const card = new Card(Suit.Hearts, Rank.Three);
+    pile.addCard(card);
+    expect(pile.peek).toBe(card);
+    expect(pile.size).toBe(3);
+  });
+});
