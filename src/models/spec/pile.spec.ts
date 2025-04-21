@@ -12,7 +12,7 @@ describe('Pile', () => {
 
   beforeEach(() => {
     emptyPile = new Pile();
-    pile = new Pile(cardPile.slice());
+    pile = new Pile([...cardPile]);
   });
 
   it('should initialize with an empty card set if none provided', () => {
@@ -47,5 +47,12 @@ describe('Pile', () => {
     pile.addCard(card);
     expect(pile.peek).toBe(card);
     expect(pile.size).toBe(3);
+  });
+
+  it('should add a card to an empty pile', () => {
+    const card = new Card(Suit.Hearts, Rank.Three);
+    emptyPile.addCard(card);
+    expect(emptyPile.peek).toBe(card);
+    expect(emptyPile.size).toBe(1);
   });
 });
