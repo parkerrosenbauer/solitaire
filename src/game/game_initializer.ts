@@ -42,10 +42,9 @@ export class GameInitializer {
   setup(): PileDto {
     if (this._toShuffle) this._deck.shuffle();
     this.createPiles();
-    this.deal(
-      this.findPileConfig('tableau')!.cardsPerPile,
-      this._piles.tableau,
-    );
+    const tableauConfig = this.findPileConfig('tableau');
+    if (tableauConfig)
+      this.deal(tableauConfig.cardsPerPile, this._piles.tableau);
     return this._piles;
   }
 
@@ -58,19 +57,19 @@ export class GameInitializer {
   }
 
   private findPileConfig(pileType: PileType): PileConfig | undefined {
-    this._config.piles.forEach((pile) => {
-      if (pile.type == pileType) {
-        console.log('match');
-        return pile;
-      }
-    });
-    return undefined;
+    const pileConfig = this._config.piles.find(
+      (pile) => pile.type === pileType,
+    );
+    return pileConfig;
   }
 
   private deal(cardsPerPile: number[], tableauPiles: Pile[]) {
+    console.log(cardsPerPile, tableauPiles);
     for (let i = 0; i < cardsPerPile.length; i++) {
       if (cardsPerPile[i] > i) {
-        tableauPiles[i].addCard(this._deck.draw());
+        let card = this._deck.draw();
+        console.log(card);
+        tableauPiles[i].addCard(card);
       }
     }
   }
