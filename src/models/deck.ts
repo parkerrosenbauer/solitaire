@@ -1,3 +1,4 @@
+import { DeckEmptyError } from '../errors';
 import { Card, Rank, Suit } from './card';
 
 export class Deck {
@@ -34,7 +35,7 @@ export class Deck {
 
   draw(): Card {
     if (this.isEmpty) {
-      throw new Error('Cannot draw from an empty deck.');
+      throw new DeckEmptyError();
     }
     return this._cards.pop()!;
   }

@@ -1,3 +1,4 @@
+import { PileEmptyError } from '../errors';
 import { Card } from './card';
 
 export class Pile {
@@ -25,7 +26,7 @@ export class Pile {
 
   draw(): Card {
     if (this.isEmpty) {
-      throw new Error('Cannot draw from an empty pile.');
+      throw new PileEmptyError();
     }
     return this._cards.pop()!;
   }

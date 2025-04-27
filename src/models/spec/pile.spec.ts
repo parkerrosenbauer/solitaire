@@ -39,7 +39,7 @@ describe('Pile', () => {
   });
 
   it('should throw an error when drawing from an empty pile', () => {
-    expect(() => emptyPile.draw()).toThrow('Cannot draw from an empty pile.');
+    expect(() => emptyPile.draw()).toThrow('Cannot draw: pile is empty.');
   });
 
   it('should add a card to the top of the pile', () => {

@@ -52,7 +52,7 @@ describe('Deck', () => {
   });
 
   it('should throw an error when drawing from an empty deck', () => {
-    expect(() => emptyDeck.draw()).toThrow('Cannot draw from an empty deck.');
+    expect(() => emptyDeck.draw()).toThrow('Cannot draw: deck is empty.');
   });
 
   it('should add a card to the top of the deck', () => {
