@@ -3,7 +3,10 @@ import { Card, Rank, Suit } from '../../models/card';
 import { GameConfig, GameInitializer } from '../game_initializer';
 
 describe('GameInitializer', () => {
-  const cards: Card[] = [];
+  let emptyConfigs: GameConfig;
+  let solitaireConfigs: GameConfig;
+  let freeCellConfigs: GameConfig;
+  const mockCardDeck: Card[] = [];
   const suits = Object.values(Suit) as Array<Suit>;
   const ranks = Object.values(Rank).filter(
     (value) => typeof value === 'number',
@@ -11,16 +14,18 @@ describe('GameInitializer', () => {
 
   suits.forEach((suit) => {
     ranks.forEach((rank) => {
-      cards.push(new Card(suit, rank));
+      mockCardDeck.push(new Card(suit, rank));
     });
   });
-  const emptyConfigs: GameConfig = {
+
+  beforeEach(() => {
+    emptyConfigs = {
     deck: new Deck([]),
     toShuffle: false,
     piles: [],
   };
-  const configs: GameConfig = {
-    deck: new Deck(cards),
+    solitaireConfigs = {
+      deck: new Deck([...mockCardDeck]),
     toShuffle: true,
     piles: [
       {
@@ -28,23 +33,46 @@ describe('GameInitializer', () => {
         count: 1,
         cardsPerPile: [0],
       },
+        {
+          type: 'tableau',
+          count: 7,
+          cardsPerPile: [1, 2, 3, 4, 5, 6, 7],
+          flipTopCard: true,
+        },
       {
         type: 'stock',
         count: 1,
-        cardsPerPile: [26],
+          cardsPerPile: [24],
       },
       {
         type: 'foundation',
         count: 4,
         cardsPerPile: [0, 0, 0, 0],
       },
+      ],
+    };
+    freeCellConfigs = {
+      deck: new Deck([...mockCardDeck]),
+      toShuffle: true,
+      piles: [
+        {
+          type: 'waste',
+          count: 4,
+          cardsPerPile: [0, 0, 0, 0],
+        },
       {
         type: 'tableau',
-        count: 7,
-        cardsPerPile: [1, 2, 3, 4, 5, 6, 7],
+          count: 8,
+          cardsPerPile: [7, 7, 7, 7, 6, 6, 6, 6],
+        },
+        {
+          type: 'foundation',
+          count: 4,
+          cardsPerPile: [0, 0, 0, 0],
       },
     ],
   };
+  });
 
   it('should initialize with no piles when specified', () => {
     const initializer = new GameInitializer(emptyConfigs);
