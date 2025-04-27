@@ -46,7 +46,7 @@ export class GameInitializer {
       if (error instanceof GameSetupError) {
         throw error;
       }
-      throw new GameSetupError('unknown error.\n' + error.message);
+      throw new GameSetupError('unknown error.\n', { cause: error });
     }
     return this._piles;
   }
