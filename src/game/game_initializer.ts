@@ -15,18 +15,10 @@ export interface GameConfig {
   piles: PileConfig[];
 }
 
-interface PileDto {
-  stock: Pile[];
-  waste: Pile[];
-  foundation: Pile[];
-  tableau: Pile[];
-}
-
 export class GameInitializer {
   private _config: GameConfig;
   private _deck: Deck;
-  private _toShuffle: boolean;
-  private _piles: PileDto = {
+  private _piles: Record<PileType, Pile[]> = {
     stock: [],
     waste: [],
     foundation: [],
@@ -39,8 +31,9 @@ export class GameInitializer {
     this._toShuffle = config.toShuffle;
   }
 
-  setup(): PileDto {
-    if (this._toShuffle) this._deck.shuffle();
+  setup(): Record<PileType, Pile[]> {
+    if (this._config.toShuffle) this._deck.shuffle();
+    try {
     this.createPiles();
     const tableauConfig = this.findPileConfig('tableau');
     if (tableauConfig)
