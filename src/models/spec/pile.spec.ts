@@ -55,4 +55,10 @@ describe('Pile', () => {
     expect(emptyPile.peek).toBe(card);
     expect(emptyPile.size).toBe(1);
   });
+
+  it('should initialize with all cards provided', () => {
+    emptyPile.cards = [...cardPile];
+    expect(emptyPile.size).toBe(2);
+    expect(emptyPile.cards).toEqual(cardPile);
+  });
 });

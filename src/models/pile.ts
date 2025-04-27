@@ -8,6 +8,10 @@ export class Pile {
     return [...this._cards];
   }
 
+  set cards(cards: Card[]) {
+    this._cards = cards;
+  }
+
   get size(): number {
     return this._cards.length;
   }
