@@ -7,7 +7,8 @@ export type PileType = 'stock' | 'waste' | 'foundation' | 'tableau';
 export interface PileConfig {
   type: PileType;
   count: number;
-  cardsPerPile: number[];
+  cardsPerPile?: number[];
+  toDeal?: boolean;
   flipTopCard?: boolean;
 }
 export interface GameConfig {
