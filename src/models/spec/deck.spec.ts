@@ -18,7 +18,7 @@ describe('Deck', () => {
   let emptyDeck: Deck;
 
   beforeEach(() => {
-    deck = new Deck(cardDeck.slice());
+    deck = new Deck([...cardDeck]);
     emptyDeck = new Deck([]);
   });
 
@@ -76,5 +76,18 @@ describe('Deck', () => {
     ];
     deck.reset(newCardDeck);
     expect(deck.cards).toEqual(newCardDeck);
+  });
+
+  it('should remove all cards from the deck in the same order', () => {
+    const originalDeck = [...cardDeck];
+    const transferedCards = deck.removeAllCards();
+    expect(deck.isEmpty).toBe(true);
+    expect(transferedCards).toEqual(originalDeck);
+  });
+
+  it('should error if attempting to remove all cards from empty deck', () => {
+    expect(() => emptyDeck.removeAllCards()).toThrow(
+      'Cannot draw: deck is empty.',
+    );
   });
 });

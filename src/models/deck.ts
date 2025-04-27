@@ -47,4 +47,13 @@ export class Deck {
   reset(cards?: Card[]) {
     this._cards = cards ?? [...this._initialCards];
   }
+
+  removeAllCards() {
+    if (this.isEmpty) {
+      throw new DeckEmptyError();
+    }
+    const cards = [...this._cards];
+    this._cards = [];
+    return cards;
+  }
 }
