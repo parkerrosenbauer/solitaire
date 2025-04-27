@@ -34,7 +34,7 @@ export class GameInitializer {
   setup(): Record<PileType, Pile[]> {
     if (this._config.toShuffle) this._deck.shuffle();
     try {
-    this.createPiles();
+      this.createPiles();
     } catch (error) {
       this._deck.reset();
       this._piles = {
@@ -53,6 +53,7 @@ export class GameInitializer {
 
   private createPiles() {
     this._config.piles.forEach((pile) => {
+      this._piles[pile.type] = [];
       for (let i = 0; i < pile.count; i++) {
         this._piles[pile.type].push(new Pile());
       }
@@ -68,7 +69,7 @@ export class GameInitializer {
     let fullPiles = false;
     while (!fullPiles) {
       fullPiles = true;
-    for (let i = 0; i < cardsPerPile.length; i++) {
+      for (let i = 0; i < cardsPerPile.length; i++) {
         if (cardsPerPile[i] > piles[i].size) {
           fullPiles = false;
           try {
