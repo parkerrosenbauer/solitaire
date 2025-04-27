@@ -1,3 +1,4 @@
+import { DeckEmptyError, GameSetupError } from '../errors';
 import { Deck } from '../models';
 import { Pile } from '../models/pile';
 
