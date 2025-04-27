@@ -28,7 +28,6 @@ export class GameInitializer {
   constructor(config: GameConfig) {
     this._config = config;
     this._deck = config.deck;
-    this._toShuffle = config.toShuffle;
   }
 
   setup(): Record<PileType, Pile[]> {
