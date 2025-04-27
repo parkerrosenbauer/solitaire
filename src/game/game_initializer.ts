@@ -34,9 +34,19 @@ export class GameInitializer {
     if (this._config.toShuffle) this._deck.shuffle();
     try {
     this.createPiles();
-    const tableauConfig = this.findPileConfig('tableau');
-    if (tableauConfig)
-      this.deal(tableauConfig.cardsPerPile, this._piles.tableau);
+    } catch (error) {
+      this._deck.reset();
+      this._piles = {
+        stock: [],
+        waste: [],
+        foundation: [],
+        tableau: [],
+      };
+      if (error instanceof GameSetupError) {
+        throw error;
+      }
+      throw new GameSetupError('unknown error.\n' + error.message);
+    }
     return this._piles;
   }
 
