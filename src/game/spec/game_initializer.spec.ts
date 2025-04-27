@@ -92,9 +92,10 @@ describe('GameInitializer', () => {
     expect(tableau.length).toBe(7);
   });
 
-  it('should deal the specified cards to the tableau piles', () => {
-    const initializer = new GameInitializer(configs);
-    const { tableau } = initializer.setup();
+  it('should deal the specified cards to the indicated piles', () => {
+    const solitaireInitializer = new GameInitializer(solitaireConfigs);
+    const { tableau, stock } = solitaireInitializer.setup();
+    expect(tableau.length).toBe(7);
     expect(tableau[0].size).toBe(1);
     expect(tableau[6].size).toBe(7);
   });
