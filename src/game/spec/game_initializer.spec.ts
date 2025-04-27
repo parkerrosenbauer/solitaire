@@ -1,7 +1,6 @@
 import { Deck } from '../../models';
 import { Card, Rank, Suit } from '../../models/card';
-import { Pile } from '../../models/pile';
-import { GameConfig, PileType, GameInitializer } from '../game_initializer';
+import { GameConfig, GameInitializer } from '../game_initializer';
 
 describe('GameInitializer', () => {
   const cards: Card[] = [];
