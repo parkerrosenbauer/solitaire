@@ -63,14 +63,32 @@ export class GameInitializer {
     });
   }
 
-  private deal(cardsPerPile: number[], tableauPiles: Pile[]) {
-    console.log(cardsPerPile, tableauPiles);
+  private deal(cardsPerPile: number[], piles: Pile[]) {
+    let fullPiles = false;
+    while (!fullPiles) {
+      fullPiles = true;
     for (let i = 0; i < cardsPerPile.length; i++) {
-      if (cardsPerPile[i] > i) {
-        let card = this._deck.draw();
-        console.log(card);
-        tableauPiles[i].addCard(card);
+        if (cardsPerPile[i] > piles[i].size) {
+          fullPiles = false;
+          try {
+            piles[i].addCard(this._deck.draw());
+          } catch (error) {
+            if (error instanceof DeckEmptyError) {
+              throw new Error('Not enough cards to satisfy pile configs.');
+            }
+            throw error;
+          }
+        }
       }
     }
+  }
+
+  private flipTopCard(piles: Pile[]) {
+    piles.forEach((pile) => {
+      if (!pile.peek) {
+        throw new Error('Cannot flip top card of an empty pile.');
+      }
+      pile.peek.flip();
+    });
   }
 }
