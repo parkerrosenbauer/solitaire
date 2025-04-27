@@ -55,14 +55,12 @@ export class GameInitializer {
       for (let i = 0; i < pile.count; i++) {
         this._piles[pile.type].push(new Pile());
       }
-    });
-  }
 
-  private findPileConfig(pileType: PileType): PileConfig | undefined {
-    const pileConfig = this._config.piles.find(
-      (pile) => pile.type === pileType,
-    );
-    return pileConfig;
+      this.deal(pile.cardsPerPile, this._piles[pile.type]);
+      if (pile.flipTopCard) {
+        this.flipTopCard(this._piles[pile.type]);
+      }
+    });
   }
 
   private deal(cardsPerPile: number[], tableauPiles: Pile[]) {
