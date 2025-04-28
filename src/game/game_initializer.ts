@@ -70,10 +70,11 @@ export class GameInitializer {
     });
   }
 
-  private createPile(pile: PileConfig) {
-    this._piles[pile.type] = [];
-    for (let i = 0; i < pile.count; i++) {
-      this._piles[pile.type].push(new Pile());
+  private createPile(pileConfig: PileConfig) {
+    const { type, count } = pileConfig;
+    this._piles[type] = [];
+    for (let i = 0; i < count; i++) {
+      this._piles[type].push(new Pile());
     }
   }
 
