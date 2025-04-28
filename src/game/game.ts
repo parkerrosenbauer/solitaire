@@ -1,4 +1,5 @@
 import { GameError } from '../errors';
+import { Card } from '../models';
 import { Pile } from '../models/pile';
 import { PileType } from './game_initializer';
 
@@ -18,5 +19,17 @@ export class Game {
       throw new GameError(`No pile exists at index ${index}.`);
     }
     return new Pile([...this._piles[type][index].cards]);
+  }
+
+  arePilesEmpty(type: PileType): boolean {
+    for (let pile of this._piles[type]) {
+      if (!pile.isEmpty) return false;
+    }
+    return true;
+  }
+
+  isTopCard(card: Card, type: PileType, index: number): boolean {
+    const pile = this.getPile(type, index);
+    return card === pile.peek;
   }
 }
