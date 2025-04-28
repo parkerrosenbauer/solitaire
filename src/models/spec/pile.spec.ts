@@ -28,8 +28,8 @@ describe('Pile', () => {
     expect(pile.peek).toEqual(cardPile[cardPile.length - 1]);
   });
 
-  it('should return undefined when peeking at an empty pile', () => {
-    expect(emptyPile.peek).toEqual(undefined);
+  it('should throw an error when peeking at an empty pile', () => {
+    expect(() => emptyPile.peek).toThrow('Cannot draw: pile is empty.');
   });
 
   it('should draw last card from the deck', () => {

@@ -108,7 +108,7 @@ export class GameInitializer {
     if (!flipTopCard) return;
     const piles = this._piles[type];
     piles.forEach((pile) => {
-      if (!pile.peek) {
+      if (pile.isEmpty) {
         throw new GameSetupError('Cannot flip top card of an empty pile.');
       }
       pile.peek.flip();

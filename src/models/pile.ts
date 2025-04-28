@@ -20,7 +20,10 @@ export class Pile {
     return this.size <= 0;
   }
 
-  get peek(): Card | undefined {
+  get peek(): Card {
+    if (this.isEmpty) {
+      throw new PileEmptyError();
+    }
     return this._cards[this.size - 1];
   }
 
