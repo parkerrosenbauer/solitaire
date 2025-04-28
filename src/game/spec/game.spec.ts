@@ -1,5 +1,5 @@
 import { Card } from '../../models';
-import { Rank, Suit } from '../../models/card';
+import { Color, Rank, Suit } from '../../models/card';
 import { Pile } from '../../models/pile';
 import { Game } from '../game';
 import { PileType } from '../game_initializer';
@@ -8,8 +8,8 @@ describe('Game', () => {
   let game: Game;
   let startingPiles: Record<PileType, Pile[]>;
   const cardPile = [
-    new Card(Suit.Clubs, Rank.A),
-    new Card(Suit.Diamonds, Rank.Ten),
+    new Card(Suit.Clubs, Rank.A, Color.Black),
+    new Card(Suit.Diamonds, Rank.Ten, Color.Red),
   ];
   const emptyPile = new Pile([]);
   const pile = new Pile(cardPile);

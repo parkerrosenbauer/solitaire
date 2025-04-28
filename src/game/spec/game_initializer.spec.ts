@@ -1,5 +1,5 @@
 import { Deck } from '../../models';
-import { Card, Rank, Suit } from '../../models/card';
+import { Card, Color, Rank, Suit } from '../../models/card';
 import { GameConfig, GameInitializer } from '../game_initializer';
 
 describe('GameInitializer', () => {
@@ -14,7 +14,9 @@ describe('GameInitializer', () => {
 
   suits.forEach((suit) => {
     ranks.forEach((rank) => {
-      cards.push(new Card(suit, rank));
+      let color = Color.Red;
+      if (suit === 'spades' || suit === 'clubs') color = Color.Black;
+      cards.push(new Card(suit, rank, color));
     });
   });
 

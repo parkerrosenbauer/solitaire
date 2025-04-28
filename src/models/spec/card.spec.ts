@@ -1,9 +1,9 @@
-import { Card, Rank, Suit } from '../card';
+import { Card, Color, Rank, Suit } from '../card';
 
 describe('Card', () => {
   let card: Card;
   beforeEach(() => {
-    card = new Card(Suit.Spades, Rank.A);
+    card = new Card(Suit.Spades, Rank.A, Color.Black);
   });
 
   it('should create a card with the given properties', () => {
@@ -13,7 +13,7 @@ describe('Card', () => {
   });
 
   it('should create a card with face up property', () => {
-    const card2 = new Card(Suit.Diamonds, Rank.K, true);
+    const card2 = new Card(Suit.Diamonds, Rank.K, Color.Red, true);
     expect(card2.isFaceUp).toBe(true);
   });
 
@@ -28,17 +28,17 @@ describe('Card', () => {
   });
 
   it('should return true when two cards have equal rank and suit', () => {
-    const card2 = new Card(Suit.Spades, Rank.A, true);
+    const card2 = new Card(Suit.Spades, Rank.A, Color.Black, true);
     expect(card.equals(card2)).toBe(true);
   });
 
   it('should return false when two cards have different suit', () => {
-    const card2 = new Card(Suit.Diamonds, Rank.A);
+    const card2 = new Card(Suit.Diamonds, Rank.A, Color.Red);
     expect(card.equals(card2)).toBe(false);
   });
 
   it('should return false when two cards have different rank', () => {
-    const card2 = new Card(Suit.Spades, Rank.Two);
+    const card2 = new Card(Suit.Spades, Rank.Two, Color.Black);
     expect(card.equals(card2)).toBe(false);
   });
 });

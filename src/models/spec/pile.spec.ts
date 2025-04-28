@@ -1,10 +1,10 @@
 import { Pile } from '../pile';
-import { Card, Rank, Suit } from '../card';
+import { Card, Color, Rank, Suit } from '../card';
 
 describe('Pile', () => {
   const cardPile = [
-    new Card(Suit.Clubs, Rank.A),
-    new Card(Suit.Diamonds, Rank.Ten),
+    new Card(Suit.Clubs, Rank.A, Color.Black),
+    new Card(Suit.Diamonds, Rank.Ten, Color.Red),
   ];
 
   let emptyPile: Pile;
@@ -43,14 +43,14 @@ describe('Pile', () => {
   });
 
   it('should add a card to the top of the pile', () => {
-    const card = new Card(Suit.Hearts, Rank.Three);
+    const card = new Card(Suit.Hearts, Rank.Three, Color.Red);
     pile.addCard(card);
     expect(pile.peek).toBe(card);
     expect(pile.size).toBe(3);
   });
 
   it('should add a card to an empty pile', () => {
-    const card = new Card(Suit.Hearts, Rank.Three);
+    const card = new Card(Suit.Hearts, Rank.Three, Color.Red);
     emptyPile.addCard(card);
     expect(emptyPile.peek).toBe(card);
     expect(emptyPile.size).toBe(1);

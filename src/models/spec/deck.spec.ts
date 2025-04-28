@@ -1,5 +1,5 @@
 import { Deck } from '../deck';
-import { Card, Rank, Suit } from '../card';
+import { Card, Color, Rank, Suit } from '../card';
 
 describe('Deck', () => {
   const cardDeck: Card[] = [];
@@ -10,7 +10,11 @@ describe('Deck', () => {
 
   suits.forEach((suit) => {
     ranks.forEach((rank) => {
-      cardDeck.push(new Card(suit, rank));
+      let color = Color.Red;
+      if (suit === 'spades' || suit === 'clubs') {
+        color = Color.Black;
+      }
+      cardDeck.push(new Card(suit, rank, color));
     });
   });
 
@@ -71,8 +75,8 @@ describe('Deck', () => {
 
   it('should reset the deck with new cards', () => {
     const newCardDeck = [
-      new Card(Suit.Clubs, Rank.A),
-      new Card(Suit.Diamonds, Rank.Ten),
+      new Card(Suit.Clubs, Rank.A, Color.Black),
+      new Card(Suit.Diamonds, Rank.Ten, Color.Red),
     ];
     deck.reset(newCardDeck);
     expect(deck.cards).toEqual(newCardDeck);
