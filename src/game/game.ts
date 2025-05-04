@@ -21,6 +21,13 @@ export class Game {
     return new Pile([...this._piles[type][index].cards]);
   }
 
+  getMutablePile(type: PileType, index: number): Pile {
+    if (this._piles[type].length <= index) {
+      throw new GameError(`No pile exists at index ${index}.`);
+    }
+    return this._piles[type][index];
+  }
+
   arePilesEmpty(type: PileType): boolean {
     for (let pile of this._piles[type]) {
       if (!pile.isEmpty) return false;
