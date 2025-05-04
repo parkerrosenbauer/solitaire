@@ -19,7 +19,7 @@ export class GameRules {
     this._game = game;
   }
 
-  private getPile(type: PileType, index: number): Pile {
+  private _getPile(type: PileType, index: number): Pile {
     return this._game.getPile(type, index);
   }
 
