@@ -1,15 +1,20 @@
+import { GameRuleError } from '../errors';
 import { Card } from '../models';
 import { Rank } from '../models/card';
 import { Pile } from '../models/pile';
 import { Game } from './game';
 import { PileType } from './game_initializer';
 
+export interface PileDto {
+  type: PileType;
+  index: number;
+}
+
 export interface MoveDto {
   card: Card;
-  destinationType: PileType;
-  destinationIdx: number;
-  originType: PileType;
-  originIdx: number;
+  count: number;
+  destination: PileDto;
+  origin: PileDto;
 }
 
 export class GameRules {
