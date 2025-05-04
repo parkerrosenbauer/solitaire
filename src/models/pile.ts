@@ -1,4 +1,4 @@
-import { PileEmptyError } from '../errors';
+import { CardNotFoundError, PileEmptyError } from '../errors';
 import { Card } from './card';
 
 export class Pile {
@@ -40,5 +40,17 @@ export class Pile {
 
   addCard(card: Card) {
     this._cards.push(card);
+  }
+
+  addPile(pile: Pile) {
+    this._cards.push(...pile.cards);
+  }
+
+  splitAt(card: Card): Pile {
+    const index = this._cards.findIndex((c) => c.equals(card));
+    if (index === -1) {
+      throw new CardNotFoundError('Cannot split: card not found in pile.');
+    }
+    return new Pile(this._cards.splice(index));
   }
 }
