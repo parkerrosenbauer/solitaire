@@ -63,6 +63,10 @@ export class Card {
     );
   }
 
+  copy(): Card {
+    return new Card(this.suit, this.rank, this.color, this._faceUp);
+  }
+
   toString(): string {
     const rankString = rankToString[this.rank] ?? this.rank.toString();
     return `${this.color} ${rankString} of ${this.suit}${this.isFaceUp ? ' (face up)' : ' (face down)'}`;
