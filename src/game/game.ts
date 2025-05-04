@@ -34,9 +34,4 @@ export class Game {
     }
     return true;
   }
-
-  isTopCard(card: Card, type: PileType, index: number): boolean {
-    const pile = this.getPile(type, index);
-    return card === pile.peek;
-  }
 }
