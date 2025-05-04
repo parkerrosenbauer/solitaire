@@ -1,34 +1,6 @@
-import { Card, Color, Rank, Suit } from '../../models/card';
-import { Pile } from '../../models/pile';
-import { Game } from '../game';
+import { Rank, Suit } from '../../models/card';
+import { cardOf, pileOf, mockGame } from './helpers/spec_utils';
 import { GameEngine } from '../game_engine';
-
-function cardOf(rank: Rank, suit: Suit) {
-  const redSuits = [Suit.Diamonds, Suit.Hearts];
-  return new Card(
-    suit,
-    rank,
-    redSuits.includes(suit) ? Color.Red : Color.Black,
-  );
-}
-
-function pileOf(...cards: Card[]) {
-  return new Pile(cards);
-}
-
-function gameOf(
-  stock?: Pile[],
-  waste?: Pile[],
-  tableau?: Pile[],
-  foundation?: Pile[],
-) {
-  return new Game({
-    stock: stock || [],
-    waste: waste || [],
-    tableau: tableau || [],
-    foundation: foundation || [],
-  });
-}
 
 describe('GameEngine', () => {
   describe('drawFromStock', () => {
@@ -36,7 +8,7 @@ describe('GameEngine', () => {
       const stock = pileOf(cardOf(Rank.Ten, Suit.Clubs));
       const waste = pileOf();
 
-      const game = gameOf([stock], [waste]);
+      const game = mockGame([stock], [waste]);
 
       const engine = new GameEngine(game);
       engine.drawFromStock();
@@ -49,7 +21,7 @@ describe('GameEngine', () => {
       const stock = pileOf(cardOf(Rank.Ten, Suit.Clubs));
       const waste = pileOf();
 
-      const game = gameOf([stock], [waste]);
+      const game = mockGame([stock], [waste]);
 
       const engine = new GameEngine(game);
       engine.drawFromStock();
@@ -64,7 +36,7 @@ describe('GameEngine', () => {
       );
       const waste = pileOf();
 
-      const game = gameOf([stock], [waste]);
+      const game = mockGame([stock], [waste]);
 
       const engine = new GameEngine(game);
       engine.drawFromStock();
@@ -86,7 +58,7 @@ describe('GameEngine', () => {
       );
       const waste = pileOf();
 
-      const game = gameOf([stock], [waste]);
+      const game = mockGame([stock], [waste]);
 
       const engine = new GameEngine(game);
       engine.drawFromStock();
@@ -101,7 +73,7 @@ describe('GameEngine', () => {
       const stock = pileOf();
       const waste = pileOf();
 
-      const game = gameOf([stock], [waste]);
+      const game = mockGame([stock], [waste]);
 
       const engine = new GameEngine(game);
 
