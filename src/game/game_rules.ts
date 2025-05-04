@@ -58,8 +58,4 @@ export class GameRules {
       return true;
     return false;
   }
-
-  canMoveToWaste(move: MoveDto): boolean {
-    return move.originType === 'stock';
-  }
 }
