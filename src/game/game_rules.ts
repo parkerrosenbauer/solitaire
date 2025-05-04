@@ -23,6 +23,19 @@ export class GameRules {
     return this._game.getPile(type, index);
   }
 
+  canMoveCard(move: MoveDto): boolean {
+    const { destination } = move;
+
+    switch (destination.type) {
+      case 'tableau':
+        return this._canMoveToTableau(move);
+      case 'foundation':
+        return this._canMoveToFoundation(move);
+      default:
+        throw new GameRuleError(`Cannot move card to ${destination.type}.`);
+    }
+  }
+
   isWinConditionMet(): boolean {
     return (
       this._game.arePilesEmpty('tableau') &&
@@ -32,11 +45,12 @@ export class GameRules {
     );
   }
 
-  canMoveToTableau(move: MoveDto): boolean {
-    const { card, destinationIdx } = move;
+  private _canMoveToTableau(move: MoveDto): boolean {
+    const { card, count, destination, origin } = move;
     if (!card.isFaceUp) return false;
-    const tableau = this.getPile('tableau', destinationIdx);
-    if (tableau.isEmpty && card.rank === Rank.K) return true;
+    if (count > 1 && origin.type !== 'tableau') return false;
+    const tableau = this._getPile('tableau', destination.index);
+    if (tableau.isEmpty) return card.rank === Rank.K;
     if (
       tableau.peek.color !== card.color &&
       tableau.peek.rank - 1 === card.rank
@@ -45,12 +59,11 @@ export class GameRules {
     return false;
   }
 
-  canMoveToFoundation(move: MoveDto): boolean {
-    const { card, destinationIdx, originIdx, originType } = move;
-    if (!card.isFaceUp || !this._game.isTopCard(card, originType, originIdx))
-      return false;
-    const foundation = this.getPile('foundation', destinationIdx);
-    if (foundation.isEmpty && card.rank === Rank.A) return true;
+  private _canMoveToFoundation(move: MoveDto): boolean {
+    const { card, count, destination } = move;
+    if (!card.isFaceUp || count !== 1) return false;
+    const foundation = this._getPile('foundation', destination.index);
+    if (foundation.isEmpty) return card.rank === Rank.A;
     if (
       foundation.peek.color === card.color &&
       foundation.peek.rank + 1 === card.rank
