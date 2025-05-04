@@ -1,6 +1,6 @@
 export class PileEmptyError extends Error {
-  constructor() {
-    super('Cannot draw: pile is empty.');
+  constructor(action: String) {
+    super(`Cannot ${action}: pile is empty.`);
     this.name = 'PileEmptyError';
   }
 }

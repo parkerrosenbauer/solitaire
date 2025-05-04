@@ -29,7 +29,7 @@ describe('Pile', () => {
   });
 
   it('should throw an error when peeking at an empty pile', () => {
-    expect(() => emptyPile.peek).toThrow('Cannot draw: pile is empty.');
+    expect(() => emptyPile.peek).toThrow('Cannot peek: pile is empty.');
   });
 
   it('should draw last card from the deck', () => {

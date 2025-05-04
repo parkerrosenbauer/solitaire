@@ -22,7 +22,7 @@ export class Pile {
 
   get peek(): Card {
     if (this.isEmpty) {
-      throw new PileEmptyError();
+      throw new PileEmptyError('peek');
     }
     return this._cards[this.size - 1];
   }
@@ -33,7 +33,7 @@ export class Pile {
 
   draw(): Card {
     if (this.isEmpty) {
-      throw new PileEmptyError();
+      throw new PileEmptyError('draw');
     }
     return this._cards.pop()!;
   }
