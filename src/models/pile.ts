@@ -20,15 +20,15 @@ export class Pile {
     return this.size <= 0;
   }
 
-  get peek(): Card {
+  constructor(cards: Card[] = []) {
+    this._cards = cards;
+  }
+
+  peek(): Card {
     if (this.isEmpty) {
       throw new PileEmptyError('peek');
     }
-    return this._cards[this.size - 1];
-  }
-
-  constructor(cards: Card[] = []) {
-    this._cards = cards;
+    return this._cards[this.size - 1].copy();
   }
 
   draw(): Card {
