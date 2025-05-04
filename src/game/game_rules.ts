@@ -19,19 +19,8 @@ export class GameRules {
     this._game = game;
   }
 
-  canMoveCard(move: MoveDto): boolean {
-    switch (move.destinationType) {
-      case 'stock':
-        return this.canMoveToStock();
-      case 'waste':
-        return this.canMoveToWaste(move);
-      case 'tableau':
-        return this.canMoveToTableau(move);
-      case 'foundation':
-        return this.canMoveToFoundation(move);
-      default:
-        return false;
-    }
+  private getPile(type: PileType, index: number): Pile {
+    return this._game.getPile(type, index);
   }
 
   isWinConditionMet(): boolean {
@@ -43,11 +32,7 @@ export class GameRules {
     );
   }
 
-  private getPile(type: PileType, index: number): Pile {
-    return this._game.getPile(type, index);
-  }
-
-  private canMoveToTableau(move: MoveDto): boolean {
+  canMoveToTableau(move: MoveDto): boolean {
     const { card, destinationIdx } = move;
     if (!card.isFaceUp) return false;
     const tableau = this.getPile('tableau', destinationIdx);
@@ -60,7 +45,7 @@ export class GameRules {
     return false;
   }
 
-  private canMoveToFoundation(move: MoveDto): boolean {
+  canMoveToFoundation(move: MoveDto): boolean {
     const { card, destinationIdx, originIdx, originType } = move;
     if (!card.isFaceUp || !this._game.isTopCard(card, originType, originIdx))
       return false;
@@ -74,7 +59,7 @@ export class GameRules {
     return false;
   }
 
-  private canMoveToWaste(move: MoveDto): boolean {
+  canMoveToWaste(move: MoveDto): boolean {
     return move.originType === 'stock';
   }
 
