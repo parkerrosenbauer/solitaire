@@ -1,11 +1,18 @@
 import { GamePlayError } from '../errors';
 import { Game } from './game';
+import { GameRules, MoveDto } from './rules/game_rules';
 
 export class GameEngine {
-  private _game: Game;
+  constructor(
+    private readonly _game: Game,
+    private readonly _rules: GameRules,
+  ) {}
 
-  constructor(game: Game) {
-    this._game = game;
+  moveCard(move: MoveDto) {
+    if (!this._rules.isValidMove(move)) {
+      throw new GamePlayError('Invalid move according to the rules.');
+    }
+    const { card, destination } = move;
   }
 
   drawFromStock() {
