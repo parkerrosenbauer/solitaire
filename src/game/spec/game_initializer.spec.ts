@@ -146,7 +146,7 @@ describe('GameInitializer', () => {
   it('should flip the top card to face up when specified', () => {
     const initializer = new GameInitializer(configs);
     const { tableau } = initializer.setup();
-    expect(tableau[0].peek?.isFaceUp).toEqual(true);
+    expect(tableau[0].peek()?.isFaceUp).toEqual(true);
   });
 
   it('should throw an error when attempting to flip top card of an empty pile', () => {
