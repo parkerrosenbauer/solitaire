@@ -112,7 +112,7 @@ export class GameInitializer {
       if (pile.isEmpty) {
         throw new GameSetupError('Cannot flip top card of an empty pile.');
       }
-      pile.peek.flip();
+      pile.peek().flip();
     });
   }
 
