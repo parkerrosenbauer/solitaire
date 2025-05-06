@@ -11,4 +11,12 @@ export class SpiderRules implements GameRules {
     // Implement the logic to check if the win condition is met in Solitaire
     return false; // Placeholder, implement actual logic
   }
+
+  canDrawFromWaste(): boolean {
+    return false;
+  }
+
+  canDrawFromStock(): boolean {
+    return true;
+  }
 }

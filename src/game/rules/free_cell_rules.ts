@@ -11,4 +11,12 @@ export class FreeCellRules implements GameRules {
     // Implement the logic to check if the win condition is met in Solitaire
     return false; // Placeholder, implement actual logic
   }
+
+  canDrawFromWaste(): boolean {
+    return true;
+  }
+
+  canDrawFromStock(): boolean {
+    return false;
+  }
 }

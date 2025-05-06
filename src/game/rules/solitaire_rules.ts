@@ -1,7 +1,7 @@
 import { GameRuleError } from '../../errors';
 import { Rank } from '../../models/card';
 import { Game } from '../game';
-import { GameRules, MoveDto } from './game_rules';
+import { drawFromStockDto, GameRules, MoveDto } from './game_rules';
 import {
   isDifferentColor,
   isNextHigherRank,
@@ -30,6 +30,23 @@ export class SolitaireRules implements GameRules {
       gameState.arePilesEmpty('stock') &&
       !gameState.arePilesEmpty('foundation')
     );
+  }
+
+  canDrawFromWaste(): boolean {
+    return true;
+  }
+
+  canDrawFromStock(): boolean {
+    return true;
+  }
+
+  onDrawFromStock(): drawFromStockDto {
+    return {
+      destination: 'waste',
+      flipDrawnCards: true,
+      numberOfCards: 1,
+      resetStockFromDestination: true,
+    };
   }
 
   private _canMoveToTableau(move: MoveDto): boolean {
