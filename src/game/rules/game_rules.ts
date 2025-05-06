@@ -15,7 +15,17 @@ export interface MoveDto {
   origin: PileDto;
 }
 
+export interface drawFromStockDto {
+  destination: PileType;
+  flipDrawnCards: true;
+  numberOfCards: number;
+  resetStockFromDestination: boolean;
+}
+
 export interface GameRules {
   isValidMove(move: MoveDto): boolean;
   isWinConditionMet(gameState: Game): boolean;
+  canDrawFromWaste(): boolean;
+  canDrawFromStock(): boolean;
+  onDrawFromStock?(): drawFromStockDto;
 }
