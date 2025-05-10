@@ -1,5 +1,5 @@
 import { GameRuleError } from '../../errors';
-import { Rank } from '../../core/card/card';
+import { Card, Rank } from '../card';
 import { Game } from '../../core/game';
 import { GameRules } from './game_rules';
 import {
@@ -10,28 +10,31 @@ import {
   isTopCard,
 } from './rule_utils';
 import { PileType } from '../pile';
-import { MoveDto } from '../../dto/move.dto';
+import { MoveRequest } from '../../dto/move.request';
 import { drawFromStockConfig } from './draw_from_stock_config.interface';
+import { GameType } from './game_type.enum';
 
 export class KlondikeRules implements GameRules {
-  isValidMove(gameState: Game, move: MoveDto): boolean {
+  gameType = GameType.Klondike;
+
+  isValidMove(game: Game, move: MoveRequest): boolean {
     const { destination } = move;
     switch (destination.type) {
       case 'tableau':
-        return this._canMoveToTableau(gameState, move);
+        return this._canMoveToTableau(game, move);
       case 'foundation':
-        return this._canMoveToFoundation(gameState, move);
+        return this._canMoveToFoundation(game, move);
       default:
         throw new GameRuleError(`Cannot move card to ${destination.type}.`);
     }
   }
 
-  isWinConditionMet(gameState: Game): boolean {
+  isWinConditionMet(game: Game): boolean {
     return (
-      gameState.arePilesEmpty(PileType.Tableau) &&
-      gameState.arePilesEmpty(PileType.Waste) &&
-      gameState.arePilesEmpty(PileType.Stock) &&
-      !gameState.arePilesEmpty(PileType.Foundation)
+      game.arePilesEmpty(PileType.Tableau) &&
+      game.arePilesEmpty(PileType.Waste) &&
+      game.arePilesEmpty(PileType.Stock) &&
+      !game.arePilesEmpty(PileType.Foundation)
     );
   }
 
@@ -48,13 +51,11 @@ export class KlondikeRules implements GameRules {
     };
   }
 
-  private _canMoveToTableau(gameState: Game, move: MoveDto): boolean {
-    const { card, destination, origin } = move;
-    const originPile = gameState.getPile(origin.type, origin.index);
-    const destinationPile = gameState.getPile(
-      destination.type,
-      destination.index,
-    );
+  private _canMoveToTableau(game: Game, move: MoveRequest): boolean {
+    const { serializedCard, destination, origin } = move;
+    const card = Card.deserialize(serializedCard);
+    const originPile = game.getPile(origin.type, origin.index);
+    const destinationPile = game.getPile(destination.type, destination.index);
     if (!card.isFaceUp) {
       return false;
     } else if (!isTopCard(originPile, card) && origin.type !== 'tableau') {
@@ -68,13 +69,11 @@ export class KlondikeRules implements GameRules {
       );
   }
 
-  private _canMoveToFoundation(gameState: Game, move: MoveDto): boolean {
-    const { card, destination, origin } = move;
-    const originPile = gameState.getPile(origin.type, origin.index);
-    const destinationPile = gameState.getPile(
-      destination.type,
-      destination.index,
-    );
+  private _canMoveToFoundation(game: Game, move: MoveRequest): boolean {
+    const { serializedCard, destination, origin } = move;
+    const card = Card.deserialize(serializedCard);
+    const originPile = game.getPile(origin.type, origin.index);
+    const destinationPile = game.getPile(destination.type, destination.index);
     if (!card.isFaceUp || !isTopCard(originPile, card)) {
       return false;
     } else if (destinationPile.isEmpty) {
