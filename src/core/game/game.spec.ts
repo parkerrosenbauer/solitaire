@@ -57,4 +57,10 @@ describe('Game', () => {
   it('should return false when not all piles of specified type are empty', () => {
     expect(game.arePilesEmpty(PileType.Tableau)).toEqual(false);
   });
+
+  it('should serialize and deserialize the game', () => {
+    const serializedGame = game.serialize();
+    const deserializedGame = Game.deserialize(serializedGame);
+    expect(deserializedGame).toEqual(game);
+  });
 });

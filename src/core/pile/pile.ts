@@ -1,5 +1,6 @@
 import { CardNotFoundError, PileEmptyError } from '../../errors';
 import { Card } from '../card/card';
+import { SerializedPile } from './pile.serialized';
 
 export class Pile {
   private _cards: Card[];
@@ -52,5 +53,15 @@ export class Pile {
       throw new CardNotFoundError('Cannot split: card not found in pile.');
     }
     return new Pile(this._cards.splice(index));
+  }
+
+  serialize(): SerializedPile {
+    return {
+      cards: this.cards.map((card) => card.serialize()),
+    };
+  }
+
+  static deserialize(data: SerializedPile): Pile {
+    return new Pile(data.cards.map((card) => Card.deserialize(card)));
   }
 }

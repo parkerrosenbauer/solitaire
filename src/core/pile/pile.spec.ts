@@ -104,4 +104,12 @@ describe('Pile', () => {
       );
     });
   });
+
+  describe('serialize', () => {
+    it('should serialize and deserialize the pile', () => {
+      const serialized = pile.serialize();
+      const deserialized = Pile.deserialize(serialized);
+      expect(deserialized).toEqual(pile);
+    });
+  });
 });

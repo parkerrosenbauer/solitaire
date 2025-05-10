@@ -1,5 +1,6 @@
 import { Color } from './color.enum';
 import { Rank, rankToString } from './rank.enum';
+import { SerializedCard } from './card.serialize';
 import { Suit } from './suit.enum';
 
 export class Card {
@@ -40,5 +41,17 @@ export class Card {
     const rankString = rankToString[this.rank] ?? this.rank.toString();
     return `${this.color} ${rankString} of ${this.suit}${this.isFaceUp ? ' (face up)' : ' (face down)'}`;
   }
+
+  serialize(): SerializedCard {
+    return {
+      suit: this.suit,
+      rank: this.rank,
+      color: this.color,
+      faceUp: this._faceUp,
+    };
+  }
+
+  static deserialize(data: SerializedCard): Card {
+    return new Card(data.suit, data.rank, data.color, data.faceUp);
+  }
 }
-export { Rank };

@@ -1,6 +1,7 @@
 import { GameError } from '../../errors';
 import { Pile } from '../pile/pile';
 import { PileType } from '../pile';
+import { SerializedGame } from './game.serialized';
 
 export class Game {
   private _piles: Record<PileType, Pile[]>;
@@ -38,7 +39,23 @@ export class Game {
     return true;
   }
 
-  serialize() {}
+  serialize(): SerializedGame {
+    return {
+      stock: this.getPiles(PileType.Stock).map((pile) => pile.serialize()),
+      waste: this.getPiles(PileType.Waste).map((pile) => pile.serialize()),
+      tableau: this.getPiles(PileType.Tableau).map((pile) => pile.serialize()),
+      foundation: this.getPiles(PileType.Foundation).map((pile) =>
+        pile.serialize(),
+      ),
+    };
+  }
 
-  static deserialize() {}
+  static deserialize(game: SerializedGame): Game {
+    return new Game({
+      stock: game.stock.map((pile) => Pile.deserialize(pile)),
+      waste: game.waste.map((pile) => Pile.deserialize(pile)),
+      tableau: game.tableau.map((pile) => Pile.deserialize(pile)),
+      foundation: game.foundation.map((pile) => Pile.deserialize(pile)),
+    });
+  }
 }

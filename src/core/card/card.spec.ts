@@ -1,3 +1,4 @@
+import { cardOf } from '../../utilities/mocks';
 import { Card } from './card';
 import { Color } from './color.enum';
 import { Rank } from './rank.enum';
@@ -57,6 +58,15 @@ describe('Card', () => {
       const card2 = card.copy();
       expect(card2).not.toBe(card);
       expect(card2.equals(card)).toBe(true);
+    });
+  });
+
+  describe('serializer', () => {
+    it('should serialize and deserialize a card', () => {
+      const card = cardOf(Rank.A, Suit.Clubs);
+      const serializedCard = card.serialize();
+      const deserializedCard = Card.deserialize(serializedCard);
+      expect(card.equals(deserializedCard)).toBe(true);
     });
   });
 });
