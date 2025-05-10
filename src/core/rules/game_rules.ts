@@ -1,6 +1,7 @@
 import { Game } from '../../core/game';
 import { MoveDto } from '../../dto';
 import { drawFromStockConfig } from './draw_from_stock_config.interface';
+import { GameType } from './game_type.enum';
 
 export interface GameRules {
   gameType: GameType;
