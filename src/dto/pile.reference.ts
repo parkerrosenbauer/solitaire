@@ -1,6 +1,6 @@
 import { PileType } from '../core/pile';
 
-export interface PileDto {
+export interface PileReference {
   type: PileType;
   index: number;
 }
