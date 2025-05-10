@@ -20,7 +20,7 @@ describe('GameRules', () => {
         const waste = pileOf(card);
         const tableau = pileOf();
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: { type: PileType.Tableau, index: 0 },
           origin: { type: PileType.Waste, index: 0 },
         };
@@ -34,7 +34,7 @@ describe('GameRules', () => {
         const waste = pileOf(card);
         const tableau = pileOf(cardOf(Rank.K, Suit.Hearts));
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: { type: PileType.Tableau, index: 0 },
           origin: { type: PileType.Waste, index: 0 },
         };
@@ -48,7 +48,7 @@ describe('GameRules', () => {
         const waste = pileOf(card);
         const tableau = pileOf(cardOf(Rank.K, Suit.Hearts));
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: { type: PileType.Tableau, index: 0 },
           origin: { type: PileType.Waste, index: 0 },
         };
@@ -62,7 +62,7 @@ describe('GameRules', () => {
         const tableau1 = pileOf(card, cardOf(Rank.J, Suit.Diamonds));
         const tableau2 = pileOf(cardOf(Rank.K, Suit.Hearts, true));
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: { type: PileType.Tableau, index: 1 },
           origin: { type: PileType.Tableau, index: 0 },
         };
@@ -78,8 +78,7 @@ describe('GameRules', () => {
         const waste = pileOf(card);
         const tableau = pileOf();
         const move: MoveDto = {
-          card,
-
+          serializedCard: card.serialize(),
           destination: { type: PileType.Tableau, index: 0 },
           origin: { type: PileType.Waste, index: 0 },
         };
@@ -93,8 +92,7 @@ describe('GameRules', () => {
         const waste = pileOf(card);
         const tableau = pileOf(cardOf(Rank.K, Suit.Hearts));
         const move: MoveDto = {
-          card,
-
+          serializedCard: card.serialize(),
           destination: { type: PileType.Tableau, index: 0 },
           origin: { type: PileType.Waste, index: 0 },
         };
@@ -108,7 +106,7 @@ describe('GameRules', () => {
         const waste = pileOf(card);
         const tableau = pileOf(cardOf(Rank.K, Suit.Clubs));
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: { type: PileType.Tableau, index: 0 },
           origin: { type: PileType.Waste, index: 0 },
         };
@@ -122,7 +120,7 @@ describe('GameRules', () => {
         const waste = pileOf(card, cardOf(Rank.J, Suit.Diamonds));
         const tableau = pileOf(cardOf(Rank.K, Suit.Hearts));
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: { type: PileType.Tableau, index: 0 },
           origin: { type: PileType.Waste, index: 0 },
         };
@@ -136,7 +134,7 @@ describe('GameRules', () => {
         const foundation = pileOf(card, cardOf(Rank.J, Suit.Diamonds));
         const tableau = pileOf(cardOf(Rank.K, Suit.Hearts));
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: { type: PileType.Tableau, index: 0 },
           origin: { type: PileType.Foundation, index: 0 },
         };
@@ -154,7 +152,7 @@ describe('GameRules', () => {
         const waste = pileOf(card);
         const foundation = pileOf();
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: { type: PileType.Foundation, index: 0 },
           origin: { type: PileType.Waste, index: 0 },
         };
@@ -168,7 +166,7 @@ describe('GameRules', () => {
         const waste = pileOf(card);
         const foundation = pileOf(cardOf(Rank.A, Suit.Spades));
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: {
             type: PileType.Foundation,
             index: 0,
@@ -187,7 +185,7 @@ describe('GameRules', () => {
         const waste = pileOf(card);
         const foundation = pileOf();
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: { type: PileType.Foundation, index: 0 },
           origin: { type: PileType.Waste, index: 0 },
         };
@@ -201,7 +199,7 @@ describe('GameRules', () => {
         const waste = pileOf(card);
         const foundation = pileOf(cardOf(Rank.A, Suit.Spades));
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: {
             type: PileType.Foundation,
             index: 0,
@@ -218,7 +216,7 @@ describe('GameRules', () => {
         const waste = pileOf(card);
         const foundation = pileOf(cardOf(Rank.A, Suit.Hearts));
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: {
             type: PileType.Foundation,
             index: 0,
@@ -235,7 +233,7 @@ describe('GameRules', () => {
         const waste = pileOf(card, cardOf(Rank.A, Suit.Spades));
         const foundation = pileOf(cardOf(Rank.A, Suit.Spades));
         const move: MoveDto = {
-          card,
+          serializedCard: card.serialize(),
           destination: {
             type: PileType.Foundation,
             index: 0,
@@ -254,7 +252,7 @@ describe('GameRules', () => {
       const card = cardOf(Rank.A, Suit.Spades, true);
       const waste = pileOf(card);
       const move: MoveDto = {
-        card,
+        serializedCard: card.serialize(),
         destination: { type: PileType.Stock, index: 0 },
         origin: { type: PileType.Waste, index: 0 },
       };
@@ -268,7 +266,7 @@ describe('GameRules', () => {
     it('should throw an error when trying to move a card to waste', () => {
       const card = cardOf(Rank.A, Suit.Spades, true);
       const move: MoveDto = {
-        card,
+        serializedCard: card.serialize(),
         destination: { type: PileType.Waste, index: 0 },
         origin: { type: PileType.Tableau, index: 0 },
       };
