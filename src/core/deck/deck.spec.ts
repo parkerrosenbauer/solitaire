@@ -1,4 +1,4 @@
-import { Card, Suit, Rank, Color } from '../card';
+import { FACE_DOWN } from '../../utils/card.constants';
 import { Deck } from './deck';
 
 describe('Deck', () => {

@@ -1,10 +1,8 @@
 import { GamePlayError } from '../../errors';
 import { Game } from '../game/game';
 import { PileType } from '../pile';
-import { createGameRules, GameRules } from '../rules';
-import { MoveDto } from '../../dto';
-import { SerializedGameEngine } from './game_engine.serialized';
-import { Card } from '../card';
+import { MoveRequest } from '../../dto';
+import { DrawFromStockConfig } from '../rules/draw_from_stock_config.interface';
 
 export class GameEngine {
   constructor(

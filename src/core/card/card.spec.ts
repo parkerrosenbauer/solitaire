@@ -1,4 +1,4 @@
-import { cardOf } from '../../utilities/mocks';
+import { cardOf } from '../../utils/mocks';
 import { Card } from './card';
 import { Color } from './color.enum';
 import { Rank } from './rank.enum';

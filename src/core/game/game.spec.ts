@@ -1,3 +1,4 @@
+import { FOUNDATION, STOCK, TABLEAU, WASTE } from '../../utils/pile.constants';
 import { Card, Color, Rank, Suit } from '../card';
 import { PileType } from '../pile';
 import { Pile } from '../pile/pile';

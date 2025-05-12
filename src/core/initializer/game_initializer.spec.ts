@@ -1,5 +1,5 @@
-import { Card, Color, Rank, Suit } from '../card';
 import { Deck } from '../deck';
+import { createStandardDeck } from '../deck/common';
 import { PileType } from '../pile';
 import { GameConfig } from './game_config.interface';
 import { GameInitializer } from './game_initializer';

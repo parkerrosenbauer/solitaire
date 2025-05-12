@@ -1,4 +1,5 @@
 import { Pile } from '../../core/pile/pile';
+import { FACE_DOWN } from '../../utils/card.constants';
 import { Card, Suit, Rank, Color } from '../card';
 
 describe('Pile', () => {
