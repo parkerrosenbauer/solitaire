@@ -3,10 +3,7 @@ import { FACE_DOWN } from '../../utils/card.constants';
 import { Card, Suit, Rank, Color } from '../card';
 
 describe('Pile', () => {
-  const cardPile = [
-    new Card(Suit.Clubs, Rank.A, Color.Black),
-    new Card(Suit.Diamonds, Rank.Ten, Color.Red),
-  ];
+  const cardPile = [FACE_DOWN.ACE_OF_CLUBS, FACE_DOWN.TEN_OF_DIAMONDS];
 
   let emptyPile: Pile;
   let pile: Pile;
@@ -16,53 +13,78 @@ describe('Pile', () => {
     pile = new Pile([...cardPile]);
   });
 
-  it('should initialize with an empty card set if none provided', () => {
+  it('initializes with no cards if none provided', () => {
     expect(emptyPile.size).toBe(0);
   });
 
-  it('should initialize with the provided cards', () => {
+  it('initializes with the provided cards', () => {
     expect(pile.size).toBe(cardPile.length);
     expect(pile.cards).toEqual(cardPile);
   });
 
-  it('should initialize with all cards provided', () => {
+  it('updates cards to provided cards', () => {
     emptyPile.cards = [...cardPile];
     expect(emptyPile.size).toBe(2);
     expect(emptyPile.cards).toEqual(cardPile);
   });
 
   describe('peek', () => {
-    it('should return the last card of the pile when peeking', () => {
+    it('returns copy of the last card', () => {
       expect(pile.peek()).toEqual(cardPile[cardPile.length - 1]);
+      expect(pile.peek()).not.toBe(cardPile[cardPile.length - 1]);
     });
 
-    it('should throw an error when peeking at an empty pile', () => {
+    it('throws when peeking at an empty pile', () => {
       expect(() => emptyPile.peek()).toThrow('Cannot peek: pile is empty.');
     });
   });
 
   describe('draw', () => {
-    it('should draw last card from the deck', () => {
+    it('draws last card from the deck', () => {
       const card = pile.draw();
       expect(card.equals(cardPile[cardPile.length - 1])).toEqual(true);
       expect(pile.size).toBe(1);
     });
 
-    it('should throw an error when drawing from an empty pile', () => {
+    it('throws when drawing from an empty pile', () => {
       expect(() => emptyPile.draw()).toThrow('Cannot draw: pile is empty.');
     });
   });
 
+  describe('getMutableCard', () => {
+    it('returns the mutable card at the specified index', () => {
+      const card = pile.getMutableCard(0);
+      expect(card.equals(cardPile[0])).toBe(true);
+    });
+
+    it('returns the reference, not a copy', () => {
+      const card = pile.getMutableCard(0);
+      expect(card).toBe(pile.cards[0]);
+      expect(card.equals(cardPile[0])).toBe(true);
+    });
+
+    it('throws when getting a card from an empty pile', () => {
+      expect(() => emptyPile.getMutableCard(0)).toThrow(
+        'Cannot getMutableCard: pile is empty.',
+      );
+    });
+
+    it('throws when getting a card at an invalid index', () => {
+      expect(() => pile.getMutableCard(-1)).toThrow('Card index -1 not found.');
+      expect(() => pile.getMutableCard(2)).toThrow('Card index 2 not found.');
+    });
+  });
+
   describe('addCard', () => {
-    it('should add a card to the top of the pile', () => {
-      const card = new Card(Suit.Hearts, Rank.Three, Color.Red);
+    it('adds a card to the top of the pile', () => {
+      const card = FACE_DOWN.ACE_OF_HEARTS;
       pile.addCard(card);
       expect(pile.peek().equals(card)).toBe(true);
       expect(pile.size).toBe(3);
     });
 
-    it('should add a card to an empty pile', () => {
-      const card = new Card(Suit.Hearts, Rank.Three, Color.Red);
+    it('adds a card to an empty pile', () => {
+      const card = FACE_DOWN.ACE_OF_SPADES;
       emptyPile.addCard(card);
       expect(emptyPile.peek().equals(card)).toBe(true);
       expect(emptyPile.size).toBe(1);
@@ -70,17 +92,17 @@ describe('Pile', () => {
   });
 
   describe('addPile', () => {
-    it('should add another pile to the top of the pile', () => {
+    it('adds another pile to the top of the pile', () => {
       const newPile = new Pile([
-        new Card(Suit.Spades, Rank.K, Color.Black),
-        new Card(Suit.Hearts, Rank.Q, Color.Red),
+        FACE_DOWN.KING_OF_SPADES,
+        FACE_DOWN.QUEEN_OF_HEARTS,
       ]);
       pile.addPile(newPile);
       expect(pile.size).toBe(4);
       expect(pile.peek().equals(newPile.peek())).toBe(true);
     });
 
-    it('should add an empty pile to the pile', () => {
+    it('adds an empty pile to the pile', () => {
       const newPile = new Pile([]);
       pile.addPile(newPile);
       expect(pile.size).toBe(2);
@@ -88,26 +110,39 @@ describe('Pile', () => {
   });
 
   describe('splitAt', () => {
-    it('should split the pile at the specified card', () => {
-      const card = new Card(Suit.Hearts, Rank.Three, Color.Red);
+    it('splits the pile at the specified card index', () => {
+      const card = FACE_DOWN.ACE_OF_SPADES;
       pile.addCard(card);
-      const splitCards = pile.splitAt(cardPile[1]);
+      const splitCards = pile.splitAt(1);
       expect(splitCards.cards).toEqual([cardPile[1], card]);
       expect(splitCards.size).toBe(2);
       expect(pile.size).toBe(1);
       expect(pile.peek().equals(cardPile[0])).toBe(true);
     });
 
-    it('should throw an error if the card is not in the pile', () => {
-      const card = new Card(Suit.Hearts, Rank.Three, Color.Red);
-      expect(() => pile.splitAt(card)).toThrow(
-        'Cannot split: card not found in pile.',
+    it('throws when splitting at an invalid index', () => {
+      expect(() => pile.splitAt(-1)).toThrow('Card index -1 not found.');
+      expect(() => pile.splitAt(2)).toThrow('Card index 2 not found.');
+    });
+
+    it('should throw an error when splitting an empty pile', () => {
+      expect(() => emptyPile.splitAt(0)).toThrow(
+        'Cannot splitAt: pile is empty.',
       );
     });
   });
 
+  describe('copy', () => {
+    it('returns a copy of the pile', () => {
+      const copiedPile = pile.copy();
+      expect(copiedPile).not.toBe(pile);
+      expect(copiedPile.cards).toEqual(pile.cards);
+      expect(copiedPile.size).toBe(pile.size);
+    });
+  });
+
   describe('serialize', () => {
-    it('should serialize and deserialize the pile', () => {
+    it('serializes and deserializes the pile', () => {
       const serialized = pile.serialize();
       const deserialized = Pile.deserialize(serialized);
       expect(deserialized).toEqual(pile);

@@ -1,5 +1,5 @@
 import { Deck } from '../deck';
-import { createStandardDeck } from '../deck/common';
+import { createStandardDeck } from '../deck/variants';
 import { PileType } from '../pile';
 import { GameConfig } from './game_config.interface';
 import { GameInitializer } from './game_initializer';
@@ -7,30 +7,17 @@ import { GameInitializer } from './game_initializer';
 describe('GameInitializer', () => {
   let emptyConfigs: GameConfig;
   let configs: GameConfig;
-  let mockCardDeck: Deck;
-  const cards: Card[] = [];
-  const suits = Object.values(Suit) as Array<Suit>;
-  const ranks = Object.values(Rank).filter(
-    (value) => typeof value === 'number',
-  ) as Array<Rank>;
-
-  suits.forEach((suit) => {
-    ranks.forEach((rank) => {
-      let color = Color.Red;
-      if (suit === 'spades' || suit === 'clubs') color = Color.Black;
-      cards.push(new Card(suit, rank, color));
-    });
-  });
+  let deck: Deck;
 
   beforeEach(() => {
-    mockCardDeck = new Deck([...cards]);
+    deck = createStandardDeck();
     emptyConfigs = {
       deck: new Deck([]),
       toShuffle: false,
       piles: [],
     };
     configs = {
-      deck: mockCardDeck,
+      deck: deck,
       toShuffle: true,
       piles: [
         {
@@ -57,7 +44,7 @@ describe('GameInitializer', () => {
     };
   });
 
-  it('should initialize with no piles when specified', () => {
+  it('initializes with no piles when specified', () => {
     const initializer = new GameInitializer(emptyConfigs);
     const { waste, stock, foundation, tableau } = initializer.setup();
     expect(waste).toEqual([]);
@@ -66,7 +53,7 @@ describe('GameInitializer', () => {
     expect(tableau).toEqual([]);
   });
 
-  it('should initialize with the correct number of piles', () => {
+  it('initializes with the correct number of piles per type', () => {
     const initializer = new GameInitializer(configs);
     const { waste, stock, foundation, tableau } = initializer.setup();
     expect(waste.length).toBe(1);
@@ -75,7 +62,7 @@ describe('GameInitializer', () => {
     expect(tableau.length).toBe(7);
   });
 
-  it('should deal the specified cards to the indicated piles', () => {
+  it('deals specified cards to piles', () => {
     const initializer = new GameInitializer(configs);
     const { tableau, stock } = initializer.setup();
     expect(tableau.length).toBe(7);
@@ -84,116 +71,83 @@ describe('GameInitializer', () => {
     expect(stock[0].size).toBe(24);
   });
 
-  it('should throw an error if sum of cardsPerPile exceeds deck size', () => {
-    const errorConfigs: GameConfig = {
-      deck: mockCardDeck,
-      toShuffle: true,
-      piles: [
-        {
-          type: PileType.Stock,
-          count: 1,
-          cardsPerPile: [53],
-          toDeal: true,
-        },
-      ],
+  it('throws if sum of cardsPerPile exceeds deck size', () => {
+    configs.piles[2] = {
+      type: PileType.Stock,
+      count: 1,
+      cardsPerPile: [53],
+      toDeal: true,
     };
-    const initializer = new GameInitializer(errorConfigs);
+    const initializer = new GameInitializer(configs);
     expect(() => initializer.setup()).toThrow(
       'Game setup failed: Not enough cards to satisfy pile configs.',
     );
   });
 
-  it('should throw an error if remainingCardPile is set but no cards remain', () => {
-    const errorConfigs: GameConfig = {
-      deck: mockCardDeck,
-      toShuffle: true,
-      piles: [
-        {
-          type: PileType.Tableau,
-          count: 1,
-          cardsPerPile: [52],
-          toDeal: true,
-        },
-        {
-          type: PileType.Stock,
-          count: 1,
-        },
-      ],
-      remainingCardPile: PileType.Stock,
+  it('throws if remainingCardPile is set but no cards remain', () => {
+    configs.piles[1] = {
+      type: PileType.Tableau,
+      count: 1,
+      cardsPerPile: [52],
+      toDeal: true,
     };
-    const initializer = new GameInitializer(errorConfigs);
+    const initializer = new GameInitializer(configs);
     expect(() => initializer.setup()).toThrow(
       'Game setup failed: No cards remaining in deck to add to stock pile.',
     );
   });
 
-  it('should throw an error if toDeal is set to true but cardsPerPile is omitted', () => {
-    const errorConfigs: GameConfig = {
-      deck: mockCardDeck,
-      toShuffle: true,
-      piles: [
-        {
-          type: PileType.Tableau,
-          count: 1,
-          toDeal: true,
-        },
-      ],
+  it('throws if toDeal is set to true but cardsPerPile is omitted', () => {
+    configs.piles[1] = {
+      type: PileType.Tableau,
+      count: 1,
+      toDeal: true,
     };
-    const initializer = new GameInitializer(errorConfigs);
+    const initializer = new GameInitializer(configs);
     expect(() => initializer.setup()).toThrow(
       'Game setup failed: cardsPerPile must be specified when toDeal set to true.',
     );
   });
 
-  it('should flip the top card to face up when specified', () => {
+  it('flips top card to face up when specified', () => {
     const initializer = new GameInitializer(configs);
     const { tableau } = initializer.setup();
-    expect(tableau[0].peek()?.isFaceUp).toEqual(true);
+    expect(tableau[0].peek().isFaceUp).toBe(true);
+    expect(tableau[1].peek().isFaceUp).toBe(true);
+    expect(tableau[2].peek().isFaceUp).toBe(true);
+    expect(tableau[3].peek().isFaceUp).toBe(true);
+    expect(tableau[4].peek().isFaceUp).toBe(true);
+    expect(tableau[5].peek().isFaceUp).toBe(true);
+    expect(tableau[6].peek().isFaceUp).toBe(true);
   });
 
-  it('should throw an error when attempting to flip top card of an empty pile', () => {
-    const originalCards = [...cards];
-    const errorConfigs: GameConfig = {
-      deck: mockCardDeck,
-      toShuffle: true,
-      piles: [
-        {
-          type: PileType.Waste,
-          count: 1,
-          cardsPerPile: [0],
-          flipTopCard: true,
-        },
-      ],
+  it('throws when attempting to flip top card of an empty pile', () => {
+    const originalCards = [...deck.cards];
+    configs.piles[0] = {
+      type: PileType.Waste,
+      count: 1,
+      cardsPerPile: [0],
+      flipTopCard: true,
     };
-    const initializer = new GameInitializer(errorConfigs);
+    const initializer = new GameInitializer(configs);
     expect(() => initializer.setup()).toThrow(
       'Game setup failed: Cannot flip top card of an empty pile.',
     );
-    expect(mockCardDeck.cards).toEqual(originalCards);
+    expect(deck.cards).toEqual(originalCards);
   });
 
-  it('should shuffle the cards when indicated', () => {
+  it('shuffles when indicated', () => {
     const mockShuffle = jest.spyOn(Deck.prototype, 'shuffle');
     const initializer = new GameInitializer(configs);
     initializer.setup();
     expect(mockShuffle).toHaveBeenCalled();
   });
 
-  it('should not shuffle the cards when indicated', () => {
-    const originalCards = [...cards];
-    const unshuffledConfigs: GameConfig = {
-      deck: mockCardDeck,
-      toShuffle: false,
-      piles: [
-        {
-          type: PileType.Stock,
-          count: 1,
-          cardsPerPile: [52],
-        },
-      ],
-      remainingCardPile: PileType.Stock,
-    };
-    const initializer = new GameInitializer(unshuffledConfigs);
+  it('does not shuffle when indicated', () => {
+    const originalCards = [...deck.cards];
+    configs.toShuffle = false;
+    configs.piles = [{ type: PileType.Stock, count: 1 }];
+    const initializer = new GameInitializer(configs);
     const { stock } = initializer.setup();
     expect(stock[0].cards).toEqual(originalCards);
   });

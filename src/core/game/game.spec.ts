@@ -7,61 +7,108 @@ import { Game } from './game';
 describe('Game', () => {
   let game: Game;
   let startingPiles: Record<PileType, Pile[]>;
-  const card1 = new Card(Suit.Clubs, Rank.A, Color.Black);
-  const card2 = new Card(Suit.Diamonds, Rank.Ten, Color.Red);
-  const emptyPile = new Pile([]);
-  const pile = new Pile([card1, card2]);
 
   beforeEach(() => {
     startingPiles = {
-      foundation: [emptyPile, emptyPile, emptyPile, emptyPile],
-      stock: [emptyPile],
-      tableau: [pile],
-      waste: [emptyPile],
+      foundation: [
+        FOUNDATION.EMPTY,
+        FOUNDATION.EMPTY,
+        FOUNDATION.EMPTY,
+        FOUNDATION.EMPTY,
+      ],
+      stock: [STOCK.EMPTY],
+      tableau: [TABLEAU.ALL_UP.KQ],
+      waste: [WASTE.EMPTY],
     };
     game = new Game(startingPiles);
   });
 
-  it('should return the piles based on type', () => {
-    const tableau = game.getPiles(PileType.Tableau);
-    const stock = game.getPiles(PileType.Stock);
+  describe('getPiles', () => {
+    it('returns piles based on type', () => {
+      const tableau = game.getPiles(PileType.Tableau);
+      const stock = game.getPiles(PileType.Stock);
+      expect(tableau.length).toBe(1);
+      expect(stock.length).toBe(1);
+    });
 
-    expect(tableau.length).toBe(1);
-    expect(stock.length).toBe(1);
+    it('returns copies of the piles, not references', () => {
+      const tableau = game.getPiles(PileType.Tableau);
+      expect(tableau[0]).not.toBe(startingPiles.tableau[0]);
+      expect(tableau[0]).toEqual(startingPiles.tableau[0]);
+      const stock = game.getPile(PileType.Stock, 0);
+      expect(stock).not.toBe(startingPiles.stock[0]);
+      expect(stock).toEqual(startingPiles.stock[0]);
+    });
   });
 
-  it('should return copies of the piles, not references', () => {
-    const tableau = game.getPiles(PileType.Tableau);
-    expect(tableau[0]).not.toBe(startingPiles.tableau[0]);
-    expect(tableau[0]).toEqual(startingPiles.tableau[0]);
+  describe('getPile', () => {
+    it('returns pile at index', () => {
+      const firstTableau = game.getPile(PileType.Tableau, 0);
+      expect(firstTableau).toEqual(TABLEAU.ALL_UP.KQ);
+    });
 
-    const stock = game.getPile(PileType.Stock, 0);
-    expect(stock).not.toBe(startingPiles.stock[0]);
-    expect(stock).toEqual(startingPiles.stock[0]);
+    it('returns copy of pile, not reference', () => {
+      const firstTableau = game.getPile(PileType.Tableau, 0);
+      expect(firstTableau).not.toBe(startingPiles.tableau[0]);
+      expect(firstTableau).toEqual(startingPiles.tableau[0]);
+    });
+
+    it('throws if index is invalid', () => {
+      expect(() => game.getPile(PileType.Tableau, 1)).toThrow(
+        'Game error: No pile exists at index 1.',
+      );
+    });
   });
 
-  it('should return the pile at the specified index', () => {
-    const firstTableau = game.getPile(PileType.Tableau, 0);
-    expect(firstTableau).toEqual(pile);
+  describe('getMutablePiles', () => {
+    it('returns mutable piles based on type', () => {
+      const tableau = game.getMutablePiles(PileType.Tableau);
+      const stock = game.getMutablePiles(PileType.Stock);
+      expect(tableau.length).toBe(1);
+      expect(stock.length).toBe(1);
+    });
+
+    it('returns referecnes to the piles, not copies', () => {
+      const tableau = game.getMutablePiles(PileType.Tableau);
+      expect(tableau[0]).toBe(startingPiles.tableau[0]);
+      const stock = game.getMutablePile(PileType.Stock, 0);
+      expect(stock).toBe(startingPiles.stock[0]);
+    });
   });
 
-  it('should error if index is invalid', () => {
-    expect(() => game.getPile(PileType.Tableau, 1)).toThrow(
-      'Game error: No pile exists at index 1.',
-    );
+  describe('getMutablePile', () => {
+    it('returns mutable pile at index', () => {
+      const firstTableau = game.getMutablePile(PileType.Tableau, 0);
+      expect(firstTableau).toBe(TABLEAU.ALL_UP.KQ);
+    });
+
+    it('returns reference to pile, not copy', () => {
+      const firstTableau = game.getMutablePile(PileType.Tableau, 0);
+      expect(firstTableau).toBe(startingPiles.tableau[0]);
+    });
+
+    it('throws if index is invalid', () => {
+      expect(() => game.getMutablePile(PileType.Tableau, 1)).toThrow(
+        'Game error: No pile exists at index 1.',
+      );
+    });
   });
 
-  it('should retun true when all piles of specific type are empty', () => {
-    expect(game.arePilesEmpty(PileType.Foundation)).toEqual(true);
+  describe('arePilesEmpty', () => {
+    it('returns true when all piles are empty', () => {
+      expect(game.arePilesEmpty(PileType.Foundation)).toEqual(true);
+    });
+
+    it('returns false when not all piles are empty', () => {
+      expect(game.arePilesEmpty(PileType.Tableau)).toEqual(false);
+    });
   });
 
-  it('should return false when not all piles of specified type are empty', () => {
-    expect(game.arePilesEmpty(PileType.Tableau)).toEqual(false);
-  });
-
-  it('should serialize and deserialize the game', () => {
-    const serializedGame = game.serialize();
-    const deserializedGame = Game.deserialize(serializedGame);
-    expect(deserializedGame).toEqual(game);
+  describe('serialize', () => {
+    it('serializes and deserializes game', () => {
+      const serializedGame = game.serialize();
+      const deserializedGame = Game.deserialize(serializedGame);
+      expect(deserializedGame).toEqual(game);
+    });
   });
 });
