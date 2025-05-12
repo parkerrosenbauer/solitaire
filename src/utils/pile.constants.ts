@@ -1,0 +1,85 @@
+import { FACE_DOWN, FACE_UP } from './card.constants';
+import { pileOf } from './mocks';
+
+export const TABLEAU = {
+  EMPTY: pileOf(),
+  ALL_UP: {
+    K: pileOf(FACE_UP.KING_OF_SPADES),
+    KQ: pileOf(FACE_UP.KING_OF_SPADES, FACE_UP.QUEEN_OF_HEARTS),
+    Q: pileOf(FACE_UP.QUEEN_OF_HEARTS),
+    QJ: pileOf(FACE_UP.QUEEN_OF_HEARTS, FACE_UP.JACK_OF_SPADES),
+    S543: pileOf(
+      FACE_UP.FIVE_OF_SPADES,
+      FACE_UP.FOUR_OF_HEARTS,
+      FACE_UP.THREE_OF_CLUBS,
+    ),
+    S76543: pileOf(
+      FACE_UP.SEVEN_OF_SPADES,
+      FACE_UP.SIX_OF_DIAMONDS,
+      FACE_UP.FIVE_OF_SPADES,
+      FACE_UP.FOUR_OF_HEARTS,
+      FACE_UP.THREE_OF_CLUBS,
+    ),
+    A: pileOf(FACE_UP.ACE_OF_SPADES),
+  },
+  FIRST_DOWN: {
+    K: pileOf(FACE_DOWN.ACE_OF_HEARTS, FACE_UP.KING_OF_SPADES),
+    KQ: pileOf(
+      FACE_DOWN.ACE_OF_HEARTS,
+      FACE_UP.KING_OF_SPADES,
+      FACE_UP.QUEEN_OF_HEARTS,
+    ),
+    Q: pileOf(FACE_DOWN.ACE_OF_HEARTS, FACE_UP.QUEEN_OF_HEARTS),
+    QJ: pileOf(
+      FACE_DOWN.ACE_OF_HEARTS,
+      FACE_UP.QUEEN_OF_HEARTS,
+      FACE_UP.JACK_OF_SPADES,
+    ),
+    H6543: pileOf(
+      FACE_DOWN.ACE_OF_HEARTS,
+      FACE_UP.SIX_OF_SPADES,
+      FACE_UP.FIVE_OF_CLUBS,
+      FACE_UP.FOUR_OF_HEARTS,
+      FACE_UP.THREE_OF_CLUBS,
+    ),
+    S543: pileOf(
+      FACE_DOWN.ACE_OF_HEARTS,
+      FACE_UP.FIVE_OF_SPADES,
+      FACE_UP.FOUR_OF_HEARTS,
+      FACE_UP.THREE_OF_CLUBS,
+    ),
+    S2: pileOf(FACE_DOWN.ACE_OF_HEARTS, FACE_UP.TWO_OF_SPADES),
+    A: pileOf(FACE_DOWN.ACE_OF_HEARTS, FACE_UP.ACE_OF_SPADES),
+  },
+};
+
+export const FOUNDATION = {
+  EMPTY: pileOf(),
+  A: pileOf(FACE_UP.ACE_OF_SPADES),
+};
+
+export const WASTE = {
+  EMPTY: pileOf(),
+  A: pileOf(FACE_UP.ACE_OF_SPADES),
+  S2: pileOf(FACE_UP.TWO_OF_SPADES),
+  K: pileOf(FACE_UP.KING_OF_SPADES),
+  Q: pileOf(FACE_UP.QUEEN_OF_SPADES),
+  S2K: pileOf(FACE_UP.TWO_OF_SPADES, FACE_UP.KING_OF_SPADES),
+};
+
+export const STOCK = {
+  EMPTY: pileOf(),
+  A: pileOf(FACE_DOWN.ACE_OF_SPADES),
+  S10J: pileOf(FACE_DOWN.TEN_OF_SPADES, FACE_DOWN.JACK_OF_SPADES),
+  S10JQ: pileOf(
+    FACE_DOWN.TEN_OF_SPADES,
+    FACE_DOWN.JACK_OF_SPADES,
+    FACE_DOWN.QUEEN_OF_SPADES,
+  ),
+  S10JQK: pileOf(
+    FACE_DOWN.TEN_OF_SPADES,
+    FACE_DOWN.JACK_OF_SPADES,
+    FACE_DOWN.QUEEN_OF_SPADES,
+    FACE_DOWN.KING_OF_SPADES,
+  ),
+};
