@@ -71,6 +71,12 @@ export const FOUNDATION = {
     FACE_UP.KING_OF_SPADES,
   ),
   A: pileOf(FACE_UP.ACE_OF_SPADES),
+  A234: pileOf(
+    FACE_UP.ACE_OF_SPADES,
+    FACE_UP.TWO_OF_SPADES,
+    FACE_UP.THREE_OF_SPADES,
+    FACE_UP.FOUR_OF_SPADES,
+  ),
 };
 
 export const WASTE = {
@@ -84,6 +90,7 @@ export const WASTE = {
 
 export const STOCK = {
   EMPTY: pileOf(),
+  K: pileOf(FACE_DOWN.KING_OF_SPADES),
   A: pileOf(FACE_DOWN.ACE_OF_SPADES),
   S10J: pileOf(FACE_DOWN.TEN_OF_SPADES, FACE_DOWN.JACK_OF_SPADES),
   S10JQ: pileOf(
