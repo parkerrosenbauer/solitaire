@@ -1,13 +1,13 @@
+import {
+  createWasteToTableauRequest,
+  createTableauToTableauRequest,
+} from '../../utils';
 import { FACE_DOWN, FACE_UP } from '../../utils/card.constants';
 import { cardOf, mockGame } from '../../utils/mocks';
 import { STOCK, TABLEAU, WASTE } from '../../utils/pile.constants';
 import { Rank, Suit } from '../card';
 import { PileType } from '../pile';
 import { DrawFromStockConfig } from '../rules';
-import {
-  createTableauToTableauRequest,
-  createWasteToTableauRequest,
-} from '../rules/utils';
 import { GameEngine } from './game_engine';
 
 describe('GameEngine', () => {
