@@ -5,8 +5,10 @@ import { GameType } from './game_type.enum';
 
 export interface GameRules {
   gameType: GameType;
-  isValidMove(game: Game, move: MoveDto): boolean;
+  isValidMove(game: Game, move: MoveRequest): boolean;
   isWinConditionMet(game: Game): boolean;
+  getAllValidMoves(game: Game): MoveRequest[];
+  hasAvailableMoves(game: Game): boolean;
   canDrawFromStock(): boolean;
-  onDrawFromStock?(): drawFromStockConfig;
+  onDrawFromStock?(): DrawFromStockConfig;
 }
