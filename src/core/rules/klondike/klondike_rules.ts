@@ -47,7 +47,7 @@ export class KlondikeRules implements GameRules {
     return this.getValidMovesFromStock(game);
   }
 
-  getValidMovesFromStock(game: Game, otherMoveCount: number): MoveRequest[] {
+  getValidMovesFromStock(game: Game): MoveRequest[] {
     const stock = game.getPile(PileType.Stock, 0);
     const waste = game.getPile(PileType.Waste, 0);
 
@@ -55,9 +55,6 @@ export class KlondikeRules implements GameRules {
     if (stock.isEmpty && waste.isEmpty) return [];
 
     const move = [Utils.createDrawFromStockRequest(PileType.Waste)];
-    // If there are other moves available, we don't need to check for possible
-    // moves from stock or waste
-    if (otherMoveCount > 0) return move;
 
     // Check the stock and waste piles for possible moves to tableau or foundation
     for (let i = 0; i < stock.size; i++) {
