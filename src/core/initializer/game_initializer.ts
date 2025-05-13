@@ -17,16 +17,16 @@ export class GameInitializer {
   constructor(config: GameConfig) {
     this._config = config;
     this._deck = config.deck;
-    this.initializePiles();
+    this._initializePiles();
   }
 
   setup(): Record<PileType, Pile[]> {
     try {
-      this.shuffleDeck();
-      this.setupPiles();
-      this.handleRemainingCards();
+      this._shuffleDeck();
+      this._setupPiles();
+      this._handleRemainingCards();
     } catch (error) {
-      this.setupRollback();
+      this._setupRollback();
       if (error instanceof GameSetupError) {
         throw error;
       }
@@ -35,7 +35,7 @@ export class GameInitializer {
     return this._piles;
   }
 
-  private initializePiles() {
+  private _initializePiles() {
     this._piles = {
       stock: [],
       waste: [],
@@ -44,19 +44,19 @@ export class GameInitializer {
     };
   }
 
-  private shuffleDeck() {
+  private _shuffleDeck() {
     if (this._config.toShuffle) this._deck.shuffle();
   }
 
-  private setupPiles() {
+  private _setupPiles() {
     this._config.piles.forEach((pileConfig) => {
-      this.createPile(pileConfig);
-      this.deal(pileConfig);
-      this.flipTopCard(pileConfig);
+      this._createPile(pileConfig);
+      this._deal(pileConfig);
+      this._flipTopCard(pileConfig);
     });
   }
 
-  private createPile(pileConfig: PileConfig) {
+  private _createPile(pileConfig: PileConfig) {
     const { type, count } = pileConfig;
     this._piles[type] = [];
     for (let i = 0; i < count; i++) {
@@ -64,7 +64,7 @@ export class GameInitializer {
     }
   }
 
-  private deal(pileConfig: PileConfig) {
+  private _deal(pileConfig: PileConfig) {
     const { toDeal, cardsPerPile, type } = pileConfig;
     if (!toDeal) return;
     if (!cardsPerPile) {
@@ -90,19 +90,20 @@ export class GameInitializer {
     }
   }
 
-  private flipTopCard(pileConfig: PileConfig) {
+  private _flipTopCard(pileConfig: PileConfig) {
     const { type, flipTopCard } = pileConfig;
     if (!flipTopCard) return;
+
     const piles = this._piles[type];
     piles.forEach((pile) => {
       if (pile.isEmpty) {
         throw new GameSetupError('Cannot flip top card of an empty pile.');
       }
-      pile.peek().flip();
+      pile.getMutableCard(pile.size - 1).flip();
     });
   }
 
-  private handleRemainingCards() {
+  private _handleRemainingCards() {
     if (this._config.remainingCardPile) {
       const remainingPile = this._piles[this._config.remainingCardPile];
 
@@ -122,8 +123,8 @@ export class GameInitializer {
     }
   }
 
-  private setupRollback() {
+  private _setupRollback() {
     this._deck.reset();
-    this.initializePiles();
+    this._initializePiles();
   }
 }
