@@ -1,7 +1,7 @@
 import { PileReference } from './pile.reference';
 
 export interface MoveRequest {
-  serializedCard: SerializedCard;
+  cardIndex: number;
   destination: PileReference;
   origin: PileReference;
 }
