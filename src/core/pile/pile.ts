@@ -39,6 +39,16 @@ export class Pile {
     return this._cards.pop()!;
   }
 
+  getMutableCard(cardIndex: number): Card {
+    if (this.isEmpty) {
+      throw new PileEmptyError('getMutableCard');
+    }
+    if (cardIndex < 0 || cardIndex >= this.size) {
+      throw new CardNotFoundError(`Card index ${cardIndex} not found.`);
+    }
+    return this._cards[cardIndex];
+  }
+
   addCard(card: Card) {
     this._cards.push(card);
   }
