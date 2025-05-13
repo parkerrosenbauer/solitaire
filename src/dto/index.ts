@@ -1,2 +1,2 @@
-export { PileReference as PileDto } from './pile.reference';
-export { MoveRequest as MoveDto } from './move.request';
+export { PileReference } from './pile.reference';
+export { MoveRequest } from './move.request';
