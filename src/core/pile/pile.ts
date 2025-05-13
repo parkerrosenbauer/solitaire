@@ -52,7 +52,11 @@ export class Pile {
     if (index === -1) {
       throw new CardNotFoundError('Cannot split: card not found in pile.');
     }
-    return new Pile(this._cards.splice(index));
+    return new Pile(this._cards.splice(cardIndex));
+  }
+
+  copy(): Pile {
+    return new Pile(this._cards.map((card) => card.copy()));
   }
 
   serialize(): SerializedPile {
