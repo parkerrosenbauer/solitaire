@@ -5,40 +5,25 @@ import { MoveRequest } from '../../dto';
 import { DrawFromStockConfig } from '../rules/draw_from_stock_config.interface';
 
 export class GameEngine {
-  constructor(
-    private readonly _game: Game,
-    private readonly _rules: GameRules,
-  ) {}
+  constructor(private readonly _game: Game) {}
 
-  moveCard(move: MoveDto) {
-    if (!this._rules.isValidMove(this._game, move)) {
-      throw new GamePlayError('Invalid move according to the rules.');
-    }
-    const { serializedCard, destination, origin } = move;
-    const card = Card.deserialize(serializedCard);
+  moveCard(move: MoveRequest) {
+    const { cardIndex, destination, origin } = move;
     const cardsToMove = this._game
       .getMutablePile(origin.type, origin.index)
-      .splitAt(card);
+      .splitAt(cardIndex);
     this._game
       .getMutablePile(destination.type, destination.index)
       .addPile(cardsToMove);
   }
 
-  drawFromStock() {
-    if (!this._rules.canDrawFromStock()) {
-      throw new GamePlayError('Cannot draw from stock according to the rules.');
-    }
-    if (!this._rules.onDrawFromStock) {
-      throw new GamePlayError(
-        'onDrawFromStock must be defined if canDrawFromStock is true.',
-      );
-    }
+  drawFromStock(drawFromStockConfig: DrawFromStockConfig) {
     const {
       destination,
       flipDrawnCards,
       numberOfCards,
       resetStockFromDestination,
-    } = this._rules.onDrawFromStock();
+    } = drawFromStockConfig;
     const stock = this._game.getMutablePile(PileType.Stock, 0);
     const destinationPiles = this._game.getMutablePiles(destination);
 
@@ -62,10 +47,6 @@ export class GameEngine {
     }
   }
 
-  isWinConditionMet(): boolean {
-    return this._rules.isWinConditionMet(this._game);
-  }
-
   private _resetStock(sourceType: PileType, flipCards: boolean) {
     const stock = this._game.getMutablePile(PileType.Stock, 0);
     const sourcePile = this._game.getMutablePile(sourceType, 0);
@@ -79,18 +60,5 @@ export class GameEngine {
       if (flipCards) card.flip();
       stock.addCard(card);
     }
-  }
-
-  serialize(): SerializedGameEngine {
-    return {
-      game: this._game.serialize(),
-      gameType: this._rules.gameType,
-    };
-  }
-
-  static deserialize(serialized: SerializedGameEngine): GameEngine {
-    const game = Game.deserialize(serialized.game);
-    const rules = createGameRules(serialized.gameType);
-    return new GameEngine(game, rules);
   }
 }
