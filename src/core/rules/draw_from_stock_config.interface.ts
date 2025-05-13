@@ -1,6 +1,6 @@
 import { PileType } from '../pile';
 
-export interface drawFromStockConfig {
+export interface DrawFromStockConfig {
   destination: PileType;
   flipDrawnCards: boolean;
   numberOfCards: number;
