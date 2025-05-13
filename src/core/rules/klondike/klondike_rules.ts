@@ -43,8 +43,8 @@ export class KlondikeRules implements GameRules {
     moves.push(...this.getValidMovesFromTableau(game));
     moves.push(...this.getValidMovesFromFoundation(game));
     moves.push(...this.getValidMovesFromWaste(game));
-    moves.push(...this.getValidMovesFromStock(game, moves.length));
-    return moves;
+    if (moves.length > 0) return moves;
+    return this.getValidMovesFromStock(game);
   }
 
   getValidMovesFromStock(game: Game, otherMoveCount: number): MoveRequest[] {
