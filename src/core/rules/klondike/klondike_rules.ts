@@ -6,7 +6,8 @@ import { Pile, PileType } from '../../pile';
 import { DrawFromStockConfig } from '../draw_from_stock_config.interface';
 import { GameRules } from '../game_rules';
 import { GameType } from '../game_type.enum';
-import * as Utils from '../utils';
+import * as RuleUtils from '../utils';
+import * as Utils from '../../../utils';
 
 export class KlondikeRules implements GameRules {
   gameType = GameType.Klondike;
@@ -126,12 +127,12 @@ export class KlondikeRules implements GameRules {
 
     for (let i = 0; i < tableau.length; i++) {
       // Check for moves starting with the first face-up card
-      const startIndex = Utils.findFirstFaceUpCardIndex(tableau[i]);
+      const startIndex = RuleUtils.findFirstFaceUpCardIndex(tableau[i]);
       if (startIndex === -1) continue;
       for (let j = startIndex; j < tableau[i].size; j++) {
         // If the card is the top card, check for a move to foundation first
         const card = tableau[i].cards[j];
-        if (Utils.isTopCard(tableau[i], j)) {
+        if (RuleUtils.isTopCard(tableau[i], j)) {
           destinationIndex = this._validMoveToFoundationIndex(game, card);
           if (destinationIndex !== -1) {
             moves.push(
@@ -204,7 +205,7 @@ export class KlondikeRules implements GameRules {
         const card = foundation[i].cards[cardIndex];
         for (let j = 0; j < tableau.length; j++) {
           if (j === destinationIndex) continue;
-          const firstFaceUpCardIndex = Utils.findFirstFaceUpCardIndex(
+          const firstFaceUpCardIndex = RuleUtils.findFirstFaceUpCardIndex(
             tableau[j],
           );
           const firstFaceUpCard = tableau[j].cards[firstFaceUpCardIndex];
@@ -252,8 +253,8 @@ export class KlondikeRules implements GameRules {
     destinationCard: Card,
   ): boolean {
     return (
-      Utils.isDifferentColor(destinationCard, card) &&
-      Utils.isNextLowerRank(destinationCard, card)
+      RuleUtils.isDifferentColor(destinationCard, card) &&
+      RuleUtils.isNextLowerRank(destinationCard, card)
     );
   }
 
@@ -262,8 +263,8 @@ export class KlondikeRules implements GameRules {
     destinationCard: Card,
   ): boolean {
     return (
-      Utils.isSameSuit(destinationCard, card) &&
-      Utils.isNextHigherRank(destinationCard, card)
+      RuleUtils.isSameSuit(destinationCard, card) &&
+      RuleUtils.isNextHigherRank(destinationCard, card)
     );
   }
 
@@ -275,7 +276,7 @@ export class KlondikeRules implements GameRules {
     if (!card.isFaceUp) {
       return false;
     } else if (
-      !Utils.isTopCard(originPile, cardIndex) &&
+      !RuleUtils.isTopCard(originPile, cardIndex) &&
       origin.type !== 'tableau'
     ) {
       return false;
@@ -309,7 +310,7 @@ export class KlondikeRules implements GameRules {
     const originPile = game.getPile(origin.type, origin.index);
     const destinationPile = game.getPile(destination.type, destination.index);
     const card = this._getValidCard(cardIndex, originPile, origin);
-    if (!card.isFaceUp || !Utils.isTopCard(originPile, cardIndex)) {
+    if (!card.isFaceUp || !RuleUtils.isTopCard(originPile, cardIndex)) {
       return false;
     } else if (destinationPile.isEmpty) {
       return card.rank === Rank.A;
