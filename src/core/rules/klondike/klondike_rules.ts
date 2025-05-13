@@ -106,7 +106,7 @@ export class KlondikeRules implements GameRules {
       index: 0,
     });
     if (destinationIndex !== -1) {
-      moveRequest = Utils.createWasteToFoundationRequest(
+      moveRequest = Utils.createWasteToTableauRequest(
         topCardIndex,
         destinationIndex,
         0,
