@@ -56,4 +56,8 @@ export class Deck {
     this._cards = [];
     return cards;
   }
+
+  copy(): Deck {
+    return new Deck([...this._cards]);
+  }
 }
