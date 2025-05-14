@@ -1,9 +1,9 @@
-import { MoveRequest } from "../../../../dto";
-import { Game } from "../../../game";
-import { PileType } from "../../../pile";
-import * as Utils from "../../../../utils";
-import * as RuleUtils from "../../utils";
-import * as KlondikeUtils from "./move_validators";
+import { MoveRequest } from '../../../../dto';
+import { Game } from '../../../game';
+import { PileType } from '../../../pile';
+import * as Utils from '../../../../utils';
+import * as RuleUtils from '../../utils';
+import * as KlondikeUtils from './move_validators';
 
 /**
  * Checks if drawing from the stock pile will yeild a valid move.
@@ -54,7 +54,7 @@ export function getValidMovesFromStock(game: Game): MoveRequest[] {
 export function getValidMovesFromWaste(
   game: Game,
   cardIndex?: number,
-  pileType: PileType = PileType.Waste
+  pileType: PileType = PileType.Waste,
 ): MoveRequest[] {
   const waste = game.getPile(pileType, 0);
 
@@ -70,7 +70,7 @@ export function getValidMovesFromWaste(
     moveRequest = Utils.createWasteToFoundationRequest(
       topCardIndex,
       destinationIndex,
-      0
+      0,
     );
     return [moveRequest];
   }
@@ -83,7 +83,7 @@ export function getValidMovesFromWaste(
     moveRequest = Utils.createWasteToTableauRequest(
       topCardIndex,
       destinationIndex,
-      0
+      0,
     );
     return [moveRequest];
   }
@@ -119,7 +119,7 @@ export function getValidMovesFromTableau(game: Game): MoveRequest[] {
         destinationIndex = KlondikeUtils.validMoveToFoundationIndex(game, card);
         if (destinationIndex !== -1) {
           moves.push(
-            Utils.createTableauToFoundationRequest(j, destinationIndex, i)
+            Utils.createTableauToFoundationRequest(j, destinationIndex, i),
           );
           continue;
         }
@@ -144,7 +144,7 @@ export function getValidMovesFromTableau(game: Game): MoveRequest[] {
             const previousCard = tableau[i].cards[previousCardIndex];
             destinationIndex = KlondikeUtils.validMoveToFoundationIndex(
               game,
-              previousCard
+              previousCard,
             );
             if (destinationIndex !== -1) {
               moves.push(
@@ -152,8 +152,8 @@ export function getValidMovesFromTableau(game: Game): MoveRequest[] {
                 Utils.createTableauToFoundationRequest(
                   previousCardIndex,
                   destinationIndex,
-                  i
-                )
+                  i,
+                ),
               );
             }
           }
@@ -197,7 +197,7 @@ export function getValidMovesFromFoundation(game: Game): MoveRequest[] {
       for (let j = 0; j < tableau.length; j++) {
         if (j === destinationIndex) continue;
         const firstFaceUpCardIndex = RuleUtils.findFirstFaceUpCardIndex(
-          tableau[j]
+          tableau[j],
         );
         const firstFaceUpCard = tableau[j].cards[firstFaceUpCardIndex];
         if (KlondikeUtils.canPlaceCardOnCardTableau(firstFaceUpCard, card)) {
@@ -205,13 +205,13 @@ export function getValidMovesFromFoundation(game: Game): MoveRequest[] {
             Utils.createFoundationToTableauRequest(
               cardIndex,
               destinationIndex,
-              i
+              i,
             ),
             Utils.createTableauToTableauRequest(
               firstFaceUpCardIndex,
               destinationIndex,
-              j
-            )
+              j,
+            ),
           );
           continue foundationLoop;
         }
