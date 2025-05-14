@@ -28,7 +28,6 @@ describe('KlondikeRules', () => {
       it('detects king to empty tableau', () => {
         const game = mockGame({ waste: [WASTE.K], tableau: [TABLEAU.EMPTY] });
         const availableMoves = rules.getAllValidMoves(game);
-        console.log('availableMoves', availableMoves);
         expect(availableMoves.length).toBe(1);
         expect(availableMoves[0]).toEqual(wasteToTableau);
       });

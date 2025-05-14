@@ -1,14 +1,14 @@
-import { MoveRequest, PileReference } from "../../../../dto";
-import { Card, Rank } from "../../../card";
-import { Game } from "../../../game";
-import { PileType } from "../../../pile";
-import * as RuleUtils from "../../utils";
-import * as Utils from "../../../../utils";
-import { getValidCard } from "./request_validators";
+import { MoveRequest, PileReference } from '../../../../dto';
+import { Card, Rank } from '../../../card';
+import { Game } from '../../../game';
+import { PileType } from '../../../pile';
+import * as RuleUtils from '../../utils';
+import * as Utils from '../../../../utils';
+import { getValidCard } from './request_validators';
 
 export function canPlaceCardOnCardTableau(
   card: Card,
-  destinationCard: Card
+  destinationCard: Card,
 ): boolean {
   return (
     RuleUtils.isDifferentColor(destinationCard, card) &&
@@ -18,7 +18,7 @@ export function canPlaceCardOnCardTableau(
 
 export function canPlaceCardOnCardFoundation(
   card: Card,
-  destinationCard: Card
+  destinationCard: Card,
 ): boolean {
   return (
     RuleUtils.isSameSuit(destinationCard, card) &&
@@ -35,7 +35,7 @@ export function canMoveToTableau(game: Game, move: MoveRequest): boolean {
     return false;
   } else if (
     !RuleUtils.isTopCard(originPile, cardIndex) &&
-    origin.type !== "tableau"
+    origin.type !== 'tableau'
   ) {
     return false;
   } else if (destinationPile.isEmpty) {
@@ -46,7 +46,7 @@ export function canMoveToTableau(game: Game, move: MoveRequest): boolean {
 export function validMoveToTableauIndex(
   game: Game,
   cardIndex: number,
-  origin: PileReference
+  origin: PileReference,
 ): number {
   const tableau = game.getPiles(PileType.Tableau);
   for (let i = 0; i < tableau.length; i++) {
@@ -54,7 +54,7 @@ export function validMoveToTableauIndex(
       cardIndex,
       i,
       origin.type,
-      origin.index
+      origin.index,
     );
     if (canMoveToTableau(game, moveToTableau)) {
       return i;
