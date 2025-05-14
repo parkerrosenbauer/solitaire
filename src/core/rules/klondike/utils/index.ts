@@ -1,3 +1,3 @@
-export * from './rule_detection';
-export * from './move_validator';
-export * from './request_validator';
+export * from "./move_detectors";
+export * from "./move_validators";
+export * from "./request_validators";
