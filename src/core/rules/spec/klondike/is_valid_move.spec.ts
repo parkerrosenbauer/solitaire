@@ -8,7 +8,6 @@ import { GameType } from '../../game_type.enum';
 
 describe('KlondikeRules', () => {
   const rules = createGameRules(GameType.Klondike);
-
   describe('isValidMove', () => {
     it('should throw an error when trying to move a card to stock', () => {
       const game = mockGame({ stock: [STOCK.EMPTY], waste: [WASTE.Q] });

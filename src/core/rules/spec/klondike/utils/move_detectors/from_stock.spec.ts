@@ -1,16 +1,16 @@
 import e from 'express';
-import { createDrawFromStockRequest } from '../../../../utils';
-import { mockGame, pileOf } from '../../../../utils/mocks';
+import { createDrawFromStockRequest } from '../../../../../../utils';
+import { mockGame, pileOf } from '../../../../../../utils/mocks';
 import {
   FOUNDATION,
   STOCK,
   TABLEAU,
   WASTE,
-} from '../../../../utils/pile.constants';
-import { PileType } from '../../../pile';
-import { createGameRules } from '../../factory/game_rules.factory';
-import { GameType } from '../../game_type.enum';
-import { FACE_DOWN, FACE_UP } from '../../../../utils/card.constants';
+} from '../../../../../../utils/pile.constants';
+import { PileType } from '../../../../../pile';
+import { createGameRules } from '../../../../factory/game_rules.factory';
+import { GameType } from '../../../../game_type.enum';
+import { FACE_DOWN, FACE_UP } from '../../../../../../utils/card.constants';
 
 describe('KlondikeRules', () => {
   const rules = createGameRules(GameType.Klondike);
