@@ -1,3 +1,28 @@
+/**
+ * getAllValidMoves test coverage:
+ *
+ * From Tableau:
+ *  - King card to empty tableau (king only)
+ *  - Lone/multi-card to valid tableau stack
+ *  - Card to foundation (empty pile or proper suit/rank)
+ *  - nth face-up card to tableau IF prior card can move to foundation
+ *  - Deny invalid moves (wrong suit/rank/color)
+ *
+ * From Waste:
+ *  - To foundation (ace to empty, next rank, same suit)
+ *  - To tableau (king to empty, next rank, different suit)
+ *  - Deny invalid moves (wrong suit/rank/color)
+ *
+ * From Foundation:
+ *  - To tableau IF it enables a new move
+ *  - Deny invalid moves (wrong suit/rank/color)
+ *
+ * From Stock:
+ *  - Allowed only when no other valid moves
+ *  - Deny draw if moves available elsewhere
+ *
+ */
+
 import {
   createTableauToTableauRequest,
   createTableauToFoundationRequest,
