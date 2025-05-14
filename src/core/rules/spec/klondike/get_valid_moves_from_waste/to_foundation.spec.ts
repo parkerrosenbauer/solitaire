@@ -39,10 +39,20 @@ describe('KlondikeRules', () => {
         expect(availableMoves[0]).toEqual(wasteToFoundation);
       });
 
+      it('detects ace to empty foundation only once', () => {
+        const game = mockGame({
+          waste: [WASTE.A],
+          foundation: [FOUNDATION.EMPTY, FOUNDATION.EMPTY],
+        });
+        const availableMoves = rules.getAllValidMoves(game);
+        expect(availableMoves.length).toBe(1);
+        expect(availableMoves[0]).toEqual(wasteToFoundation);
+      });
+
       it('detects no move between populated pile and ace', () => {
         const game = mockGame({
           waste: [WASTE.A],
-          tableau: [FOUNDATION.A234],
+          foundation: [FOUNDATION.A234],
         });
         const availableMoves = rules.getAllValidMoves(game);
         expect(availableMoves.length).toBe(0);
@@ -74,6 +84,17 @@ describe('KlondikeRules', () => {
         });
         const availableMoves = rules.getAllValidMoves(game);
         expect(availableMoves.length).toBe(0);
+      });
+
+      it('prioritizes detecting foundation move over tableau move', () => {
+        const game = mockGame({
+          waste: [WASTE.S2],
+          tableau: [pileOf(FACE_UP.THREE_OF_HEARTS)],
+          foundation: [FOUNDATION.A],
+        });
+        const availableMoves = rules.getAllValidMoves(game);
+        expect(availableMoves.length).toBe(1);
+        expect(availableMoves[0]).toEqual(wasteToFoundation);
       });
     });
   });
