@@ -12,15 +12,13 @@ describe('KlondikeRules', () => {
   const rules = createGameRules(GameType.Klondike);
   const loneTableauToTableau = createTableauToTableauRequest(0, 1, 0);
   const firstFaceUpTableauToTableau = createTableauToTableauRequest(1, 1, 0);
-
   describe('getValidMovesFromTableau', () => {
     describe('Tableau → Tableau', () => {
       describe('Moving first face up card', () => {
-        it('detects lone king to empty tableau', () => {
+        it('detects no move of lone king to empty tableau', () => {
           const game = mockGame({ tableau: [TABLEAU.ALL_UP.K, TABLEAU.EMPTY] });
           const availableMoves = rules.getAllValidMoves(game);
-          expect(availableMoves.length).toBe(1);
-          expect(availableMoves[0]).toEqual(loneTableauToTableau);
+          expect(availableMoves.length).toBe(0);
         });
 
         it('detects king above face down to empty tableau', () => {
@@ -32,13 +30,21 @@ describe('KlondikeRules', () => {
           expect(availableMoves[0]).toEqual(firstFaceUpTableauToTableau);
         });
 
-        it('detects king with stack to empty tableau', () => {
+        it('detects no move of lone king with stack to empty tableau', () => {
           const game = mockGame({
             tableau: [TABLEAU.ALL_UP.KQ, TABLEAU.EMPTY],
           });
           const availableMoves = rules.getAllValidMoves(game);
+          expect(availableMoves.length).toBe(0);
+        });
+
+        it('detects move of king with stack to empty tableau', () => {
+          const game = mockGame({
+            tableau: [TABLEAU.FIRST_DOWN.KQ, TABLEAU.EMPTY],
+          });
+          const availableMoves = rules.getAllValidMoves(game);
           expect(availableMoves.length).toBe(1);
-          expect(availableMoves[0]).toEqual(loneTableauToTableau);
+          expect(availableMoves[0]).toEqual(firstFaceUpTableauToTableau);
         });
 
         it('detects lone card to opposite color tableau with next rank up', () => {
