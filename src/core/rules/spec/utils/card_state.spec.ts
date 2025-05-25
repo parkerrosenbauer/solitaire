@@ -14,4 +14,14 @@ describe('Card State Functions', () => {
       expect(RuleUtils.isTopCard(pile, 0)).toBe(false);
     });
   });
+
+  describe('isKing', () => {
+    it('returns true if the card is a King', () => {
+      expect(RuleUtils.isKing(FACE_DOWN.KING_OF_CLUBS)).toBe(true);
+    });
+
+    it('returns false if the card is not a King', () => {
+      expect(RuleUtils.isKing(FACE_DOWN.QUEEN_OF_DIAMONDS)).toBe(false);
+    });
+  });
 });

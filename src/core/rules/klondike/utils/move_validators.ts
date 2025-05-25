@@ -39,7 +39,7 @@ export function canMoveToTableau(game: Game, move: MoveRequest): boolean {
   ) {
     return false;
   } else if (destinationPile.isEmpty) {
-    return card.rank === Rank.K;
+    return RuleUtils.isKing(card);
   } else return canPlaceCardOnCardTableau(card, destinationPile.peek());
 }
 
