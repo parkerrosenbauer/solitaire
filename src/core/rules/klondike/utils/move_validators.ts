@@ -71,7 +71,7 @@ export function canMoveToFoundation(game: Game, move: MoveRequest): boolean {
   if (!card.isFaceUp || !RuleUtils.isTopCard(originPile, cardIndex)) {
     return false;
   } else if (destinationPile.isEmpty) {
-    return card.rank === Rank.A;
+    return RuleUtils.isAce(card);
   } else return canPlaceCardOnCardFoundation(card, destinationPile.peek());
 }
 
@@ -79,7 +79,7 @@ export function validMoveToFoundationIndex(game: Game, card: Card): number {
   const foundation = game.getPiles(PileType.Foundation);
   for (let i = 0; i < foundation.length; i++) {
     if (foundation[i].isEmpty) {
-      if (card.rank === Rank.A) return i;
+      if (RuleUtils.isAce(card)) return i;
       continue;
     }
     if (canPlaceCardOnCardFoundation(card, foundation[i].peek())) {

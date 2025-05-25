@@ -15,6 +15,16 @@ describe('Card State Functions', () => {
     });
   });
 
+  describe('isAce', () => {
+    it('returns true if the card is an Ace', () => {
+      expect(RuleUtils.isAce(FACE_DOWN.ACE_OF_CLUBS)).toBe(true);
+    });
+
+    it('returns false if the card is not an Ace', () => {
+      expect(RuleUtils.isAce(FACE_DOWN.TWO_OF_CLUBS)).toBe(false);
+    });
+  });
+
   describe('isKing', () => {
     it('returns true if the card is a King', () => {
       expect(RuleUtils.isKing(FACE_DOWN.KING_OF_CLUBS)).toBe(true);
